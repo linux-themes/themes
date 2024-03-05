@@ -18,6 +18,8 @@ const COPY = "cp"
 const MOVE = "mv"
 const MAKE_DIR = "mkdir"
 const RM_DIR = "rmdir"
+const RM_FILE = "rm"
+const TOUCH = "touch"
 
 const ICON_PATH = "~/.icons"
 const THEME_PATH = "~/.themes"
@@ -27,6 +29,7 @@ const DESKTOP_PATH = "~/."
 const TERMINAL_PATH = "~/."
 const ULAUNCHER_PATH = "~/.config/ulauncher/user-themes/"
 const TEST_PATH = "./test/"
+const TEST_FILE = "./test/test.txt"
 
 const HELP_MESSAGE = `
 	help
@@ -94,12 +97,20 @@ func install(packg string, packg_id string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(string(stdout))
+	fmt.Println(string(stdout_one))
+
+	cmd_two := exec.Command(TOUCH, TEST_FILE)
+	stdout_two, err := cmd_two.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(stdout_two))
+
 	fmt.Println(packg + " " + packg_id)
 }
 
 func remove(packg string, packg_id string) {
-	cmd := exec.Command(CAT, FILE)
+	cmd := exec.Command(RM_FILE, TEST_FILE)
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
