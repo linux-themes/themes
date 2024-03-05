@@ -92,8 +92,8 @@ func init_project(packg_type string) {
 }
 
 func install(packg string, packg_id string) {
-	cmd := exec.Command(CAT, FILE)
-	stdout, err := cmd.Output()
+	cmd_one := exec.Command(MAKE_DIR, TEST_PATH)
+	stdout_one, err := cmd_one.Output()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
