@@ -24,6 +24,7 @@ func main() {
 }
 
 func executeArguments(arguments []string) {
+	fmt.Print("Execute: ")
 	switch arguments[1] {
 	case HELP:
 		fmt.Println(arguments[1])
@@ -33,9 +34,15 @@ func executeArguments(arguments []string) {
 		fmt.Println(arguments[1])
 	case INSTALL:
 		fmt.Println(arguments[1])
+		install(arguments[1], 0)
 	case REMOVE:
 		fmt.Println(arguments[1])
 	default:
 		fmt.Println("Execute Arguments Error")
 	}
+}
+
+func install(packg string, packg_id int) {
+	fmt.Println(packg)
+	fmt.Println(packg_id)
 }
