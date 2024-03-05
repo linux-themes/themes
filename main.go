@@ -14,6 +14,23 @@ const REMOVE = "remove"
 
 const CAT = "cat"
 const FILE = "main.go"
+const COPY = "cp"
+const MOVE = "mv"
+const MAKE_DIR = "mkdir"
+
+const ICON_PATH = "~/.icons"
+const THEME_PATH = "~/.themes"
+const STATUS_PATH = "~/."
+const VSCODE_PATH = "~/.vscode"
+const DESKTOP_PATH = "~/."
+const TERMINAL_PATH = "~/."
+const ULAUNCHER_PATH = "~/.config/ulauncher/user-themes/"
+
+const HELP_MESSAGE = `
+	help
+	maunal
+	commands
+`
 
 func main() {
 	arguments := os.Args
@@ -23,7 +40,7 @@ func main() {
 	case 4:
 		executeArguments(arguments)
 	default:
-		fmt.Println("Invalid Arguments Error")
+		help()
 	}
 }
 
@@ -47,12 +64,7 @@ func executeArguments(arguments []string) {
 }
 
 func help() {
-	cmd := exec.Command(CAT, FILE)
-	stdout, err := cmd.Output()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(string(stdout))
+	fmt.Print(HELP_MESSAGE)
 }
 
 func list() {
