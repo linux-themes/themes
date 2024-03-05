@@ -17,6 +17,7 @@ const FILE = "main.go"
 const COPY = "cp"
 const MOVE = "mv"
 const MAKE_DIR = "mkdir"
+const RM_DIR = "rmdir"
 
 const ICON_PATH = "~/.icons"
 const THEME_PATH = "~/.themes"
@@ -25,6 +26,7 @@ const VSCODE_PATH = "~/.vscode"
 const DESKTOP_PATH = "~/."
 const TERMINAL_PATH = "~/."
 const ULAUNCHER_PATH = "~/.config/ulauncher/user-themes/"
+const TEST_PATH = "./test/"
 
 const HELP_MESSAGE = `
 	help
@@ -52,7 +54,7 @@ func executeArguments(arguments []string) {
 	case LIST:
 		list()
 	case INIT:
-		init_project(arguments[1])
+		init_project(arguments[2])
 	case INSTALL:
 		install(arguments[1], arguments[2])
 	case REMOVE:
@@ -68,22 +70,22 @@ func help() {
 }
 
 func list() {
-	cmd := exec.Command(CAT, FILE)
-	stdout, err := cmd.Output()
-	if err != nil {
-		fmt.Println(err.Error())
+	list := []string{
+		"list_item",
+		"list_item",
+		"list_item",
 	}
-	fmt.Println(string(stdout))
+	fmt.Println(list)
 }
 
 func init_project(packg_type string) {
-	cmd := exec.Command(CAT, FILE)
+	cmd := exec.Command(MAKE_DIR, TEST_PATH)
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(string(stdout))
-	fmt.Println(packg_type)
+	fmt.Println("STDOUT: " + string(stdout))
+	fmt.Println("Project Created: " + packg_type)
 }
 
 func install(packg string, packg_id string) {
