@@ -47,7 +47,6 @@ func main() {
 
 func executeArguments() {
 	arguments := os.Args
-	fmt.Println(arguments)
 	if len(arguments) == 1 {
 		help()
 	}
