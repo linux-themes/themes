@@ -11,7 +11,18 @@ import (
 	"github.com/charmbracelet/glamour"
 )
 
-func Extract_xz(filepath string, directory string) error {
+func ValidUrl(url string) bool {
+	if !strings.Contains(url, "https://") ||
+		!strings.Contains(url, "tar.xz") ||
+		!strings.Contains(url, "tar.gz") ||
+		!strings.Contains(url, "tar.yz") {
+		fmt.Println("Invalid Url.")
+		return false
+	}
+	return true
+}
+
+func Extract_Tar(filepath string, directory string) error {
 	fmt.Println("Extracting: " + filepath + " -> " + directory)
 	cmd := exec.Command("tar", "-xf", filepath, "-C", directory)
 	stdout, err := cmd.Output()

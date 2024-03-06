@@ -18,9 +18,8 @@
 # create
     🔨 Create linux-themes project:
  
-- 🌟 themes [create]()
-- 🌟 themes [create]()icons
-- 🌟 themes [create]()themes
+- 🌟 themes [create]()icons [package_name]()
+- 🌟 themes [create]()themes [package_name]()
 
 
 # build
@@ -33,7 +32,6 @@
     📥 Install theme:
 
 - 🌟 themes [install]()url 
-- 🌟 themes [install]()repository_url 
 - 🌟 themes [install]()icons [package_name]()
 - 🌟 themes [install]()themes [package_name]()
 
@@ -41,10 +39,8 @@
 # set
     📩 Set theme:
 
-- 🌟 themes [set]()url 
-- 🌟 themes [set]()repository_url 
-- 🌟 themes [set]()icons [package_name]()
-- 🌟 themes [set]()themes [package_name]()
+- 🌟 themes [set]()icons [package_name_or_url]()
+- 🌟 themes [set]()themes [package_name_or_url]()
 
 
 # remove
