@@ -10,7 +10,7 @@ import (
 )
 
 const HELP = "help"
-const INIT = "init"
+const CREATE = "create"
 const LIST = "list"
 const INSTALL = "install"
 const REMOVE = "remove"
@@ -50,6 +50,7 @@ func executeArguments() {
 	if len(arguments) == 1 {
 		help()
 	}
+
 	switch arguments[1] {
 	case HELP:
 		help()
@@ -60,8 +61,8 @@ func executeArguments() {
 		if len(arguments) == 3 {
 			list(arguments[2])
 		}
-	case INIT:
-		init_project()
+	case CREATE:
+		create_project()
 	case INSTALL:
 		install()
 	case REMOVE:
@@ -98,41 +99,16 @@ func list(category string) {
 
 }
 
-func init_project() {
-	file_contents, err := os.ReadFile("mardown/init.md")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	out, err := glamour.Render(string(file_contents), "dark")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(out)
+func create_project() {
+	in_development()
 }
 
 func install() {
-	cmd_one := exec.Command(MAKE_DIR, TEST_PATH)
-	stdout_one, err := cmd_one.Output()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(string(stdout_one))
-
-	cmd_two := exec.Command(TOUCH, TEST_FILE)
-	stdout_two, err := cmd_two.Output()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(string(stdout_two))
+	in_development()
 }
 
 func remove() {
-	cmd := exec.Command(RM_FILE, TEST_FILE)
-	stdout, err := cmd.Output()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(string(stdout))
+	in_development()
 }
 
 func build_path(directory string) string {
@@ -189,4 +165,16 @@ func list_all() {
 		}
 		fmt.Println(string(stdout))
 	}
+}
+
+func in_development() {
+	file_contents, err := os.ReadFile("markdown/contribute.md")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	out, err := glamour.Render(string(file_contents), "dark")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(out)
 }
