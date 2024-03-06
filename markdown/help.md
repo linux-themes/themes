@@ -3,7 +3,8 @@
 ```
 
 # help  
-❓ Print the help menu:
+    ❓ Print the help menu:
+
 - 🌟 themes [help]()
 
 # list
