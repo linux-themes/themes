@@ -5,9 +5,8 @@ make:
 
 run:
 	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME} main.go
-	./themes list package_name flag3 
+	./themes list  
 # ./themes help  
-# ./themes list  
 # ./themes install package_name flag3 
 	
 

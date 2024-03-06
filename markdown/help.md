@@ -16,4 +16,9 @@
     ❌ Remove installed theme.
 
 
+
+add example command
+
+
+
 [Linux Themes Github](https://github.com/linux-themes)

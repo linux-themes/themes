@@ -43,12 +43,7 @@ var Options struct {
 
 func main() {
 	arguments := os.Args
-	switch len(arguments) {
-	case 4:
-		executeArguments(arguments)
-	default:
-		help()
-	}
+	executeArguments(arguments)
 }
 
 func executeArguments(arguments []string) {
@@ -56,13 +51,18 @@ func executeArguments(arguments []string) {
 	case HELP:
 		help()
 	case LIST:
-		list()
+		if len(arguments) == 2 {
+			list("all")
+		}
+		if len(arguments) == 3 {
+			list(arguments[2])
+		}
 	case INIT:
-		init_project(arguments[2])
+		init_project()
 	case INSTALL:
-		install(arguments[1], arguments[2])
+		install()
 	case REMOVE:
-		remove(arguments[1], arguments[2])
+		remove()
 	default:
 		fmt.Println("Execute Arguments Error")
 	}
@@ -70,71 +70,44 @@ func executeArguments(arguments []string) {
 }
 
 func help() {
-	file_contents, err := os.ReadFile("help.md")
+	file_contents, err := os.ReadFile("markdown/help.md")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	render, err := glamour.NewTermRenderer(
-		glamour.WithAutoStyle(),
-	)
+	out, err := glamour.Render(string(file_contents), "dark")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	out, err := render.Render(string(file_contents))
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
 	fmt.Println(out)
 }
 
-func list() {
-	file_contents, err := os.ReadFile("list.md")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	render, err := glamour.NewTermRenderer(
-		glamour.WithAutoStyle(),
-	)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	out, err := render.Render(string(file_contents))
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Print(out)
-
-	var icons_path string
-	shell_variables := os.Environ()
-	for _, variable := range shell_variables {
-		if strings.Contains(variable, "LOGNAME=") {
-			current_user := strings.Split(variable, "LOGNAME=")
-			fmt.Println(current_user[1])
-			icons_path = "/home/" + current_user[1] + "/.icons"
-			// themes_path = "/home/" + current_user + "/.themes"
-		}
+func list(category string) {
+	switch category {
+	case "all":
+		list_all()
+	case "icons":
+		list_category(category)
+	case "themes":
+		list_category(category)
+	default:
+		help()
 	}
 
-	cmd := exec.Command("tree", icons_path, "-L", "1", "-C")
-	stdout, err := cmd.Output()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(string(stdout))
 }
 
-func init_project(packg_type string) {
-	cmd := exec.Command(MAKE_DIR, TEST_PATH)
-	stdout, err := cmd.Output()
+func init_project() {
+	file_contents, err := os.ReadFile("mardown/init.md")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println("STDOUT: " + string(stdout))
-	fmt.Println("Project Created: " + packg_type)
+	out, err := glamour.Render(string(file_contents), "dark")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(out)
 }
 
-func install(packg string, packg_id string) {
+func install() {
 	cmd_one := exec.Command(MAKE_DIR, TEST_PATH)
 	stdout_one, err := cmd_one.Output()
 	if err != nil {
@@ -148,18 +121,69 @@ func install(packg string, packg_id string) {
 		fmt.Println(err.Error())
 	}
 	fmt.Println(string(stdout_two))
-
-	fmt.Println(packg + " " + packg_id)
 }
 
-func remove(packg string, packg_id string) {
+func remove() {
 	cmd := exec.Command(RM_FILE, TEST_FILE)
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	fmt.Println(string(stdout))
-	fmt.Println(packg + " " + packg_id)
 }
 
-func install_dependenices() {}
+func build_path(directory string) string {
+	shell_variables := os.Environ()
+	for _, variable := range shell_variables {
+		if strings.Contains(variable, "LOGNAME=") {
+			current_user := strings.Split(variable, "LOGNAME=")
+			return "/home/" + current_user[1] + "/." + directory
+		}
+	}
+	return "build path error"
+}
+
+func list_category(category string) {
+	path := build_path(category)
+	file, err := os.ReadFile("markdown/" + strings.Split(path, ".")[1] + ".md")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	render_icons, err := glamour.Render(string(file), "dark")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Print(render_icons)
+
+	cmd := exec.Command("tree", path, "-L", "1", "-C")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(stdout))
+}
+
+func list_all() {
+	icon_path := build_path("icons")
+	themes_path := build_path("themes")
+	paths := []string{icon_path, themes_path}
+
+	for _, path := range paths {
+		file, err := os.ReadFile("markdown/" + strings.Split(path, ".")[1] + ".md")
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		render_icons, err := glamour.Render(string(file), "dark")
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Print(render_icons)
+
+		cmd := exec.Command("tree", path, "-L", "1", "-C")
+		stdout, err := cmd.Output()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Println(string(stdout))
+	}
+}
