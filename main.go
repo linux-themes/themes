@@ -36,13 +36,6 @@ const TEST_FILE = "./test/test.txt"
 const PACKAGE_TEST_LINK = "https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz"
 const PACKAGE_TEST_NAME = "test/Mint-Y-WinX.tar.xz"
 
-var Options struct {
-	OptionOne   string
-	OptionTwo   string
-	OptionThree string
-	OptionFour  string
-}
-
 func main() {
 	executeArguments()
 }
@@ -108,30 +101,37 @@ func create_project() {
 func install_command() {
 	InDevelopment()
 
-	// all
-	// single
-	// selected
-	packages := map[string]string{}
-	packages[PACKAGE_TEST_NAME] = PACKAGE_TEST_LINK
+	icon_packs := []string{
+		"https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz",
+	}
 
-	install(packages)
+	themes_packs := []string{
+		"https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz",
+	}
+
+	install(icon_packs, ".icons")
+	install(themes_packs, ".themes")
 }
 
-func install(packages map[string]string) {
-	err := os.Mkdir("test", 0777)
+func install(links []string, directory string) {
+	err := os.Mkdir(directory, 0777)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	for filepath, link := range packages {
-		fmt.Println(link)
-		if err := DownloadFile(filepath, link); err != nil {
-			panic(err)
-		}
-		if err := Extract_xz(filepath); err != nil {
+
+	for _, link := range links {
+		file_name := StripFileNameGit(link)
+		directory_path := BuildPathHomeUserDirectory(directory)
+		file_path := directory_path + "/" + file_name
+		fmt.Println(file_path)
+		if err := DownloadFile(file_path, link); err != nil {
 			fmt.Println(err.Error())
 		}
-	}
+		if err := Extract_xz(file_path, directory_path); err != nil {
+			fmt.Println(err.Error())
 
+		}
+	}
 }
 
 func remove() {
@@ -142,7 +142,7 @@ func remove() {
 }
 
 func list_category(category string) {
-	path := BuildPathUser(category)
+	path := BuildPathHomeUserDirectory(category)
 	file, err := os.ReadFile("markdown/" + strings.Split(path, ".")[1] + ".md")
 	if err != nil {
 		fmt.Println(err.Error())
@@ -162,8 +162,8 @@ func list_category(category string) {
 }
 
 func list_all() {
-	icon_path := BuildPathUser("icons")
-	themes_path := BuildPathUser("themes")
+	icon_path := BuildPathHomeUserDirectory("icons")
+	themes_path := BuildPathHomeUserDirectory("themes")
 	paths := []string{icon_path, themes_path}
 
 	for _, path := range paths {
