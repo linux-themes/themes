@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
@@ -33,6 +35,9 @@ const TERMINAL_PATH = "~/."
 const ULAUNCHER_PATH = "~/.config/ulauncher/user-themes/"
 const TEST_PATH = "./test/"
 const TEST_FILE = "./test/test.txt"
+
+const PACKAGE_TEST_LINK = "https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz"
+const PACKAGE_TEST_NAME = "test/Mint-Y-WinX.tar.xz"
 
 var Options struct {
 	OptionOne   string
@@ -105,6 +110,21 @@ func create_project() {
 
 func install() {
 	in_development()
+	selected_downloads := map[string]string{}
+	selected_downloads[PACKAGE_TEST_NAME] = PACKAGE_TEST_LINK
+
+	err := os.Mkdir("test", 0777)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	for packag, link := range selected_downloads {
+
+		if err := DownloadFile(packag, link); err != nil {
+			panic(err)
+		}
+		fmt.Println(PACKAGE_TEST_LINK)
+	}
+
 }
 
 func remove() {
@@ -177,4 +197,21 @@ func in_development() {
 		fmt.Println(err.Error())
 	}
 	fmt.Println(out)
+}
+
+func DownloadFile(filepath string, url string) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+	return err
 }
