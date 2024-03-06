@@ -28,22 +28,22 @@
 - 🌟 themes [build]()icons [package_name]()
 - 🌟 themes [build]()themes [package_name]()
 
-# download
-    📥 Download theme:
-
-- 🌟 themes [download]()url 
-- 🌟 themes [download]()repository_url 
-- 🌟 themes [download]()icons [package_name]()
-- 🌟 themes [download]()themes [package_name]()
-
-
 # install
-    📩 Install theme:
+    📥 Install theme:
 
 - 🌟 themes [install]()url 
 - 🌟 themes [install]()repository_url 
 - 🌟 themes [install]()icons [package_name]()
 - 🌟 themes [install]()themes [package_name]()
+
+
+# set
+    📩 Set theme:
+
+- 🌟 themes [set]()url 
+- 🌟 themes [set]()repository_url 
+- 🌟 themes [set]()icons [package_name]()
+- 🌟 themes [set]()themes [package_name]()
 
 
 # remove
