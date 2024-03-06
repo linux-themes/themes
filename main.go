@@ -25,17 +25,16 @@ const MAKE_DIR = "mkdir"
 const RM_DIR = "rmdir"
 const RM_FILE = "rm"
 const TOUCH = "touch"
+const TAR = "tar"
+const TAR_XZ = "tar -cfJ"
 
 const ICON_PATH = "~/.icons"
 const THEME_PATH = "~/.themes"
-const STATUS_PATH = "~/."
-const VSCODE_PATH = "~/.vscode"
-const DESKTOP_PATH = "~/."
 const TERMINAL_PATH = "~/."
 const ULAUNCHER_PATH = "~/.config/ulauncher/user-themes/"
+
 const TEST_PATH = "./test/"
 const TEST_FILE = "./test/test.txt"
-
 const PACKAGE_TEST_LINK = "https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz"
 const PACKAGE_TEST_NAME = "test/Mint-Y-WinX.tar.xz"
 
@@ -69,7 +68,7 @@ func executeArguments() {
 	case CREATE:
 		create_project()
 	case INSTALL:
-		install()
+		install_command()
 	case REMOVE:
 		remove()
 	default:
@@ -108,26 +107,62 @@ func create_project() {
 	in_development()
 }
 
-func install() {
+func install_command() {
 	in_development()
-	selected_downloads := map[string]string{}
-	selected_downloads[PACKAGE_TEST_NAME] = PACKAGE_TEST_LINK
 
+	// all
+	// single
+	// selected
+	packages := map[string]string{}
+	packages[PACKAGE_TEST_NAME] = PACKAGE_TEST_LINK
+
+	install(packages)
+}
+
+func install(packages map[string]string) {
 	err := os.Mkdir("test", 0777)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	for packag, link := range selected_downloads {
-
-		if err := DownloadFile(packag, link); err != nil {
+	for filepath, link := range packages {
+		fmt.Println(link)
+		if err := DownloadFile(filepath, link); err != nil {
 			panic(err)
 		}
-		fmt.Println(PACKAGE_TEST_LINK)
+		if err := Extract_xz(filepath); err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 
 }
 
+func Extract_xz(filepath string) error {
+	fmt.Println("Extracting: " + filepath)
+	cmd := exec.Command("tar", "-xf", filepath)
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(stdout))
+
+	cmd2 := exec.Command("mv", "mint-y-winx", "test/mint-y-winx")
+	stdout, err = cmd2.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(stdout))
+
+	if err = os.Remove(filepath); err != nil {
+		fmt.Println(err.Error())
+	}
+
+	return err
+}
+
 func remove() {
+	// all
+	// single
+	// selected
 	in_development()
 }
 
@@ -200,6 +235,7 @@ func in_development() {
 }
 
 func DownloadFile(filepath string, url string) error {
+	fmt.Println("Downloading" + filepath)
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
