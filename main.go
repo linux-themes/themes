@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/charmbracelet/glamour"
 )
 
 const HELP = "help"
@@ -31,17 +33,16 @@ const ULAUNCHER_PATH = "~/.config/ulauncher/user-themes/"
 const TEST_PATH = "./test/"
 const TEST_FILE = "./test/test.txt"
 
-const HELP_MESSAGE = `
-	help
-	maunal
-	commands
-`
+var Options struct {
+	OptionOne   string
+	OptionTwo   string
+	OptionThree string
+	OptionFour  string
+}
 
 func main() {
 	arguments := os.Args
 	switch len(arguments) {
-	case 0:
-		fmt.Println("No Arguments Error")
 	case 4:
 		executeArguments(arguments)
 	default:
@@ -50,7 +51,6 @@ func main() {
 }
 
 func executeArguments(arguments []string) {
-	fmt.Print("Execute: ")
 	switch arguments[1] {
 	case HELP:
 		help()
@@ -69,16 +69,47 @@ func executeArguments(arguments []string) {
 }
 
 func help() {
-	fmt.Print(HELP_MESSAGE)
+	file_contents, err := os.ReadFile("help.md")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	render, err := glamour.NewTermRenderer(
+		glamour.WithAutoStyle(),
+	)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	out, err := render.Render(string(file_contents))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	fmt.Println(out)
 }
 
 func list() {
-	list := []string{
-		"list_item",
-		"list_item",
-		"list_item",
+	file_contents, err := os.ReadFile("list.md")
+	if err != nil {
+		fmt.Println(err.Error())
 	}
-	fmt.Println(list)
+	render, err := glamour.NewTermRenderer(
+		glamour.WithAutoStyle(),
+	)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	out, err := render.Render(string(file_contents))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Print(out)
+
+	cmd := exec.Command("tree", "/home/user1/.icons", "-L", "1", "-C")
+	stdout, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(stdout))
 }
 
 func init_project(packg_type string) {
@@ -118,3 +149,5 @@ func remove(packg string, packg_id string) {
 	fmt.Println(string(stdout))
 	fmt.Println(packg + " " + packg_id)
 }
+
+func install_dependenices() {}
