@@ -49,11 +49,11 @@
 # remove
     ❌ Remove installed theme
 
-- 🌟 themes [create]()all
-- 🌟 themes [create]()icons [all]()
-- 🌟 themes [create]()themes [all]()
-- 🌟 themes [create]()icons [package_name]()
-- 🌟 themes [create]()themes [package_name]()
+- 🌟 themes [remove]()all
+- 🌟 themes [remove]()icons [all]()
+- 🌟 themes [remove]()themes [all]()
+- 🌟 themes [remove]()icons [package_name]()
+- 🌟 themes [remove]()themes [package_name]()
 
 🖌️  Contribute to [Linux Themes]()!
 
