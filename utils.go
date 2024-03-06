@@ -12,24 +12,23 @@ import (
 )
 
 func ValidUrl(url string) bool {
-	if !strings.Contains(url, "https://") ||
-		!strings.Contains(url, "tar.xz") ||
-		!strings.Contains(url, "tar.gz") ||
-		!strings.Contains(url, "tar.yz") {
-		fmt.Println("Invalid Url.")
-		return false
+	if strings.Contains(url, "https://") &&
+		(strings.Contains(url, "tar.xz") ||
+			strings.Contains(url, "tar.gz") ||
+			strings.Contains(url, "tar.yz")) {
+		return true
 	}
-	return true
+	fmt.Println("Invalid Url.")
+	return false
 }
 
 func Extract_Tar(filepath string, directory string) error {
 	fmt.Println("Extracting: " + filepath + " -> " + directory)
 	cmd := exec.Command("tar", "-xf", filepath, "-C", directory)
-	stdout, err := cmd.Output()
+	_, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(string(stdout))
 
 	fmt.Println("Removing: " + filepath)
 	if err = os.Remove(filepath); err != nil {
@@ -79,7 +78,7 @@ func InDevelopment() {
 }
 
 func DownloadFile(filepath string, url string) error {
-	fmt.Println("Downloading" + filepath)
+	fmt.Println("Downloading: " + filepath)
 	resp, err := http.Get(url)
 	if err != nil {
 		return err

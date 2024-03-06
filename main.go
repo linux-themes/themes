@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"syscall"
 
 	"github.com/charmbracelet/glamour"
 )
@@ -19,9 +20,10 @@ const SET = "set"
 const REMOVE = "remove"
 
 // ENUMS
+const ALL = "all"
 const ICONS = "icons"
 const THEMES = "themes"
-const ALL = "all"
+const CONFIG = "config"
 
 // PROGRAMS
 const TAR = "tar"
@@ -88,9 +90,10 @@ func executeArguments() {
 		remove_command()
 	default:
 		help_command()
+
 	}
 
-	fmt.Println("Program End.")
+	fmt.Println("\n Program End.")
 }
 
 func help_command() {
@@ -168,9 +171,11 @@ func build_command() {
 }
 
 func install_command(arguments []string) {
-	InDevelopment()
-
-	if len(arguments) == 3 {
+	fmt.Println("\n Installing... ")
+	if len(arguments) == 4 {
+		if !ValidUrl(arguments[3]) {
+			syscall.Exit(1)
+		}
 		if arguments[2] == "icons" {
 			icon_packs := []string{arguments[3]}
 			install(icon_packs, ".icons")
@@ -179,19 +184,30 @@ func install_command(arguments []string) {
 			themes_packs := []string{arguments[3]}
 			install(themes_packs, ".themes")
 		}
+		if arguments[2] == "config" {
+			InDevelopment()
+			return
+		}
 		return
 	}
 
 	if len(arguments) > 3 {
-		urls := arguments[2:]
+		urls := arguments[3:]
+		directory := arguments[2]
+
+		fmt.Print("Packages: ")
+		fmt.Println(urls)
+
 		packages := []string{}
 		for _, url := range urls {
 			if !ValidUrl(url) {
 				help_command()
+				fmt.Println("Program End.")
+				syscall.Exit(0)
 			}
 			packages = append(packages, url)
 		}
-		install(packages, "."+arguments[2])
+		install(packages, "."+directory)
 		return
 	}
 
@@ -199,17 +215,19 @@ func install_command(arguments []string) {
 }
 
 func install(links []string, directory string) {
+	fmt.Println("\n Creating Directory...")
 	err := os.Mkdir(directory, 0777)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
 	for _, link := range links {
+		fmt.Println("\n Installing... ")
+
 		file_name := StripFileNameGit(link)
 		directory_path := BuildPathHomeUserDirectory(directory)
 		file_path := directory_path + "/" + file_name
 
-		fmt.Println("Installing: " + file_path)
 		if err := DownloadFile(file_path, link); err != nil {
 			fmt.Println(err.Error())
 		}

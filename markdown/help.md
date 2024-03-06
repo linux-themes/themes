@@ -31,9 +31,9 @@
 # install
     📥 Install theme:
 
-- 🌟 themes [install]()url 
 - 🌟 themes [install]()icons [package_name]()
 - 🌟 themes [install]()themes [package_name]()
+- 🌟 themes [install]()config [package_name]()
 
 
 # set
