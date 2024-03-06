@@ -29,7 +29,7 @@
 - 🌟 themes [build]()themes [package_name]()
 
 # install
-    📥 Install theme:
+    📥 Install theme to folder:
 
 - 🌟 themes [install]()icons [package_name]()
 - 🌟 themes [install]()themes [package_name]()
@@ -37,14 +37,14 @@
 
 
 # set
-    📩 Set theme:
+    📩 Apply theme to settings:
 
 - 🌟 themes [set]()icons [package_name_or_url]()
 - 🌟 themes [set]()themes [package_name_or_url]()
 
 
 # remove
-    ❌ Remove installed theme
+    ❌ Remove installed theme:
 
 - 🌟 themes [remove]()all
 - 🌟 themes [remove]()icons [all]()
