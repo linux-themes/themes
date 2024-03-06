@@ -42,11 +42,15 @@ var Options struct {
 }
 
 func main() {
-	arguments := os.Args
-	executeArguments(arguments)
+	executeArguments()
 }
 
-func executeArguments(arguments []string) {
+func executeArguments() {
+	arguments := os.Args
+	fmt.Println(arguments)
+	if len(arguments) == 1 {
+		help()
+	}
 	switch arguments[1] {
 	case HELP:
 		help()
@@ -64,7 +68,7 @@ func executeArguments(arguments []string) {
 	case REMOVE:
 		remove()
 	default:
-		fmt.Println("Execute Arguments Error")
+		help()
 	}
 	fmt.Println("Program End.")
 }
