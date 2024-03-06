@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/charmbracelet/glamour"
 )
@@ -104,7 +105,18 @@ func list() {
 	}
 	fmt.Print(out)
 
-	cmd := exec.Command("tree", "/home/user1/.icons", "-L", "1", "-C")
+	var icons_path string
+	shell_variables := os.Environ()
+	for _, variable := range shell_variables {
+		if strings.Contains(variable, "LOGNAME=") {
+			current_user := strings.Split(variable, "LOGNAME=")
+			fmt.Println(current_user[1])
+			icons_path = "/home/" + current_user[1] + "/.icons"
+			// themes_path = "/home/" + current_user + "/.themes"
+		}
+	}
+
+	cmd := exec.Command("tree", icons_path, "-L", "1", "-C")
 	stdout, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err.Error())
