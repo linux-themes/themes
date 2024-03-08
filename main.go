@@ -302,7 +302,8 @@ func remove_command() {
 	switch action {
 	case Icons:
 		fmt.Println("Icons Action")
-		IconOptions()
+		packages := GetPackages("icons")
+		fmt.Println(packages)
 	case Themes:
 		fmt.Println("Themes Action")
 	case Config:
@@ -336,18 +337,31 @@ func remove_command() {
 
 }
 
-func IconOptions() []string {
-	options := []string{}
-	files, err := os.ReadDir(ICON_PATH)
+func GetPackages(category string) []string {
+
+	var path string
+	if category == "icons" {
+		path = ICON_PATH
+	}
+	if category == "themes" {
+		path = THEME_PATH
+	}
+	if category == "config" {
+		InDevelopment()
+		os.Exit(1)
+	}
+
+	packages := []string{}
+	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, file := range files {
 		if file.IsDir() {
-			options = append(options, ICON_PATH+"/"+file.Name())
+			packages = append(packages, path+"/"+file.Name())
 		}
 	}
-	return options
+	return packages
 }
 
 // func getThemeOptions() []string {}
