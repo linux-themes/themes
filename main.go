@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
 	"syscall"
 
 	"github.com/charmbracelet/glamour"
+	"github.com/charmbracelet/huh"
+	"github.com/charmbracelet/huh/spinner"
+	"github.com/charmbracelet/lipgloss"
 )
 
 // COMMAND ENUMS
@@ -222,7 +226,7 @@ func install(links []string, directory string) {
 	}
 
 	for _, link := range links {
-		fmt.Println("\n Installing... ")
+		fmt.Println("\n Installing: " + directory + " ...")
 
 		file_name := StripFileNameGit(link)
 		directory_path := BuildPathHomeUserDirectory(directory)
@@ -239,11 +243,176 @@ func install(links []string, directory string) {
 
 func set_command() {
 	InDevelopment()
+	// gnome
+	// cinnamon
+	// i3
+	// wayland
 }
 
-func remove_command() {
-	// all
-	// single
-	// selected
-	InDevelopment()
+// exists returns whether the given file or directory exists
+func Exists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
+
+type Action int
+
+const (
+	Icons Action = iota
+	Themes
+	Config
+	Spin
+	Cancel
+)
+
+// var highlight = lipgloss.NewStyle().Foreground(lipgloss.Color("#00D7D7"))
+
+func remove_command() {
+	spinnerStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
+
+	theme := huh.ThemeBase16()
+	theme.FieldSeparator = lipgloss.NewStyle().SetString("\n")
+	theme.Help.FullKey.MarginTop(1)
+
+	var action Action
+	f := huh.NewForm(
+		huh.NewGroup(
+			huh.NewSelect[Action]().
+				Value(&action).
+				Options(
+					huh.NewOption("Icons", Icons),
+					huh.NewOption("Themes", Themes),
+					huh.NewOption("Config", Config),
+					huh.NewOption("Spinner", Spin),
+					huh.NewOption("Cancel", Cancel),
+				).
+				Title("Choose Folder"),
+		),
+	).WithTheme(theme)
+	err := f.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	switch action {
+	case Icons:
+		fmt.Println("Icons Action")
+		IconOptions()
+	case Themes:
+		fmt.Println("Themes Action")
+	case Config:
+		fmt.Println("Config")
+	case Spin:
+		fmt.Println("Spinner Example")
+		_ = spinner.New().Title("Spinner example...").Style(spinnerStyle).Run()
+	case Cancel:
+		fmt.Println("Cancelling...")
+		os.Exit(1)
+	}
+	// fmt.Printf("Selected themes are: \n%s \n%s \n ", highlight.Render("theme_one"), highlight.Render("theme_two"))
+
+	var nextAction string
+	f = huh.NewForm(
+		huh.NewGroup(
+			huh.NewSelect[string]().
+				Options(huh.NewOptions("Remove")...).
+				Title("What's next?").Value(&nextAction),
+		),
+	).WithTheme(theme)
+
+	err = f.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if nextAction == "Remove" {
+		_ = spinner.New().Title("Removing Packages: list...").Style(spinnerStyle).Run()
+		fmt.Println("Packages Removed.")
+	}
+
+}
+
+func IconOptions() []string {
+	options := []string{}
+	files, err := os.ReadDir(ICON_PATH)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, file := range files {
+		if file.IsDir() {
+			options = append(options, ICON_PATH+"/"+file.Name())
+		}
+	}
+	return options
+}
+
+// func getThemeOptions() []string {}
+// func getThemeOptions() []string {}
+// func getThemeOptions() []string {}
+// func getThemeOptions() []string {}
+// func getThemeOptions() []string {}
+// func getThemeOptions() []string {}
+
+// func remove_command(options []string) {
+// 	fmt.Println("\n Removing... ")
+// 	if len(arguments) == 4 {
+// 		if _, err := Exists(arguments[3]); err != nil {
+// 			fmt.Println(err.Error())
+// 			panic(err)
+// 		}
+// 		if arguments[2] == "icons" {
+// 			icon_packs := []string{arguments[3]}
+// 			remove(icon_packs, ".icons")
+// 		}
+// 		if arguments[2] == "themes" {
+// 			themes_packs := []string{arguments[3]}
+// 			remove(themes_packs, ".themes")
+// 		}
+// 		if arguments[2] == "config" {
+// 			InDevelopment()
+// 			return
+// 		}
+// 		return
+// 	}
+
+// 	if len(arguments) > 3 {
+// 		file_path := arguments[3:]
+// 		directory := arguments[2]
+
+// 		fmt.Print("Packages: ")
+// 		fmt.Println(file_path)
+
+// 		packages := []string{}
+// 		for _, url := range file_path {
+// 			if !ValidUrl(url) {
+// 				help_command()
+// 				fmt.Println("Program End.")
+// 				syscall.Exit(0)
+// 			}
+// 			packages = append(packages, url)
+// 		}
+// 		install(packages, "."+directory)
+// 		return
+// 	}
+
+// 	help_command()
+// }
+
+// func remove(packages []string, directory string) {
+// 	for _, packag := range packages {
+// 		is_valid, err := Exists(packag)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 		if is_valid {
+// 			fmt.Println("directory to be removed: " + packag)
+// 			// if err := os.Remove(""); err != nil {
+// 			// 	fmt.Println(err.Error())
+// 			// }
+// 		}
+// 	}
+// }
