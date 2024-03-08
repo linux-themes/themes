@@ -1,10 +1,9 @@
 BINARY_NAME=themes
 
 make:
-	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME} main.go utils.go
-
+	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME} main.go 
 run:
-	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME} main.go utils.go
+	GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME} main.go 
 	./themes
 	./themes help
 	./themes list  
