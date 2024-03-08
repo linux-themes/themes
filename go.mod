@@ -8,7 +8,6 @@ require (
 	github.com/charmbracelet/huh v0.3.0
 	github.com/charmbracelet/huh/spinner v0.0.0-20240306161957-71f31c155b08
 	github.com/charmbracelet/lipgloss v0.9.1
-	github.com/charmbracelet/x/exp/strings v0.0.0-20240307183742-ad8dadc14f31
 )
 
 require (
