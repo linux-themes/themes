@@ -55,6 +55,7 @@ var USER = SetUser()
 var HOME_PATH = "/home"
 var USER_PATH = HOME_PATH + "/" + USER
 var ICON_PATH = USER_PATH + "/.icons"
+var CONFIG_PATH = USER_PATH + "/.config"
 var THEME_PATH = USER_PATH + "/.themes"
 var TERMINAL_PATH = USER_PATH + "/.gnome/terminal/themes"
 var ULAUNCHER_PATH = USER_PATH + "/.config/ulauncher/user-themes"
@@ -306,8 +307,12 @@ func remove_command() {
 		fmt.Println(packages)
 	case Themes:
 		fmt.Println("Themes Action")
+		packages := GetPackages("themes")
+		fmt.Println(packages)
 	case Config:
 		fmt.Println("Config")
+		packages := GetPackages("config")
+		fmt.Println(packages)
 	case Spin:
 		fmt.Println("Spinner Example")
 		_ = spinner.New().Title("Spinner example...").Style(spinnerStyle).Run()
@@ -347,8 +352,8 @@ func GetPackages(category string) []string {
 		path = THEME_PATH
 	}
 	if category == "config" {
-		InDevelopment()
-		os.Exit(1)
+		path = CONFIG_PATH
+
 	}
 
 	packages := []string{}
