@@ -97,7 +97,7 @@ func MenuSelection() {
 		os.Exit(1)
 	}
 
-	prepareBurger := func() {
+	loading_action_progress := func() {
 		time.Sleep(3 * time.Second)
 	}
 	_ = spinner.New().
@@ -105,7 +105,7 @@ func MenuSelection() {
 		// TitleStyle(lipgloss.NewStyle().Foreground(green)).
 		Style(lipgloss.NewStyle().Foreground(red)).
 		Accessible(accessible).
-		Action(prepareBurger).
+		Action(loading_action_progress).
 		Run()
 
 		// Print results
