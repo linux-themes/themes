@@ -14,12 +14,14 @@
 - 🌟 themes [list]()
 - 🌟 themes [list]()icons
 - 🌟 themes [list]()themes
+- 🌟 themes [list]()config
 
 # create
     🔨 Create linux-themes project:
  
 - 🌟 themes [create]()icons [package_name]()
 - 🌟 themes [create]()themes [package_name]()
+- 🌟 themes [create]()config [package_name]()
 
 
 # build
@@ -33,7 +35,6 @@
 
 - 🌟 themes [install]()icons [package_name]()
 - 🌟 themes [install]()themes [package_name]()
-- 🌟 themes [install]()config [package_name]()
 
 
 # set
