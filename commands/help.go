@@ -2,17 +2,13 @@ package commands
 
 import (
 	"fmt"
-	"os"
+	"main/markdown"
 
 	"github.com/charmbracelet/glamour"
 )
 
 func HelpCommand() {
-	file_contents, err := os.ReadFile("markdown/help.md")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	out, err := glamour.Render(string(file_contents), "dark")
+	out, err := glamour.Render(string(markdown.HELP_MARKDOWN), "dark")
 	if err != nil {
 		fmt.Println(err.Error())
 	}

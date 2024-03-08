@@ -12,15 +12,15 @@ func InstallCommand(arguments []string) {
 		if !ValidUrl(arguments[3]) {
 			syscall.Exit(1)
 		}
-		if arguments[2] == "icons" {
+		if arguments[2] == ICONS {
 			icon_packs := []string{arguments[3]}
 			Install(icon_packs, ".icons")
 		}
-		if arguments[2] == "themes" {
+		if arguments[2] == THEMES {
 			themes_packs := []string{arguments[3]}
 			Install(themes_packs, ".themes")
 		}
-		if arguments[2] == "config" {
+		if arguments[2] == CONFIG {
 			InDevelopment()
 			return
 		}

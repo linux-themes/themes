@@ -2,22 +2,21 @@ package commands
 
 import (
 	"fmt"
-	"os"
+	"main/markdown"
 	"os/exec"
-	"strings"
 
 	"github.com/charmbracelet/glamour"
 )
 
 func ListCommand(category string) {
 	switch category {
-	case "all":
+	case ALL:
 		ListAll()
-	case "icons":
+	case ICONS:
 		ListCategory(category)
-	case "themes":
+	case THEMES:
 		ListCategory(category)
-	case "config":
+	case CONFIG:
 		ListCategory(category)
 	default:
 		HelpCommand()
@@ -25,10 +24,17 @@ func ListCommand(category string) {
 }
 
 func ListCategory(category string) {
-	file, err := os.ReadFile("markdown/" + category + ".md")
-	if err != nil {
-		fmt.Println(err.Error())
+	var file string
+	if category == ICONS {
+		file = markdown.ICONS_MARKDOWN
 	}
+	if category == THEMES {
+		file = markdown.THEMES_MARKDOWN
+	}
+	if category == CONFIG {
+		file = markdown.CONFIG_MARKDOWN
+	}
+
 	render_icons, err := glamour.Render(string(file), "dark")
 	if err != nil {
 		fmt.Println(err.Error())
@@ -44,19 +50,16 @@ func ListCategory(category string) {
 }
 
 func ListAll() {
+	files := []string{markdown.ICONS_MARKDOWN, markdown.THEMES_MARKDOWN, markdown.CONFIG_MARKDOWN}
 	paths := []string{ICON_PATH, THEME_PATH, CONFIG_PATH}
-	for _, path := range paths {
-		file, err := os.ReadFile("markdown/" + strings.Split(path, ".")[1] + ".md")
-		if err != nil {
-			fmt.Println(err.Error())
-		}
+	for index, file := range files {
 		render_icons, err := glamour.Render(string(file), "dark")
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		fmt.Print(render_icons)
 
-		cmd := exec.Command("tree", path, "-L", "1", "-C")
+		cmd := exec.Command("tree", paths[index], "-L", "1", "-C")
 		stdout, err := cmd.Output()
 		if err != nil {
 			fmt.Println(err.Error())

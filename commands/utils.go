@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"io"
+	"main/markdown"
 	"net/http"
 	"os"
 	"os/exec"
@@ -66,11 +67,7 @@ func BuildPathHomeUserDirectory(directory string) string {
 }
 
 func InDevelopment() {
-	file_contents, err := os.ReadFile("markdown/contribute.md")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	out, err := glamour.Render(string(file_contents), "dark")
+	out, err := glamour.Render(string(markdown.CONTRIBUTE_MARKDOWN), "dark")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
