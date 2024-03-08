@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 
 	"github.com/charmbracelet/glamour"
@@ -26,15 +25,7 @@ func ListCommand(category string) {
 }
 
 func ListCategory(category string) {
-	//fix
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	parent := filepath.Dir(wd)
-	fmt.Println(parent)
-
-	file, err := os.ReadFile(parent + "/themes-cli/markdown/" + category + ".md")
+	file, err := os.ReadFile("markdown/" + category + ".md")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
