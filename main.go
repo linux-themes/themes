@@ -3,15 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"main/components"
 	"os"
 	"os/exec"
 	"strings"
 	"syscall"
 
 	"github.com/charmbracelet/glamour"
-	"github.com/charmbracelet/huh"
-	"github.com/charmbracelet/huh/spinner"
-	"github.com/charmbracelet/lipgloss"
 )
 
 // COMMAND ENUMS
@@ -275,70 +273,74 @@ const (
 // var highlight = lipgloss.NewStyle().Foreground(lipgloss.Color("#00D7D7"))
 
 func remove_command() {
-	spinnerStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
 
-	theme := huh.ThemeBase16()
-	theme.FieldSeparator = lipgloss.NewStyle().SetString("\n")
-	theme.Help.FullKey.MarginTop(1)
+	components.MenuSelection()
 
-	var action Action
-	f := huh.NewForm(
-		huh.NewGroup(
-			huh.NewSelect[Action]().
-				Value(&action).
-				Options(
-					huh.NewOption("Icons", Icons),
-					huh.NewOption("Themes", Themes),
-					huh.NewOption("Config", Config),
-					huh.NewOption("Spinner", Spin),
-					huh.NewOption("Cancel", Cancel),
-				).
-				Title("Choose Folder"),
-		),
-	).WithTheme(theme)
-	err := f.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-	switch action {
-	case Icons:
-		fmt.Println("Icons Action")
-		packages := GetPackages("icons")
-		fmt.Println(packages)
-	case Themes:
-		fmt.Println("Themes Action")
-		packages := GetPackages("themes")
-		fmt.Println(packages)
-	case Config:
-		fmt.Println("Config")
-		packages := GetPackages("config")
-		fmt.Println(packages)
-	case Spin:
-		fmt.Println("Spinner Example")
-		_ = spinner.New().Title("Spinner example...").Style(spinnerStyle).Run()
-	case Cancel:
-		fmt.Println("Cancelling...")
-		os.Exit(1)
-	}
-	// fmt.Printf("Selected themes are: \n%s \n%s \n ", highlight.Render("theme_one"), highlight.Render("theme_two"))
+	// spinnerStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("4"))
 
-	var nextAction string
-	f = huh.NewForm(
-		huh.NewGroup(
-			huh.NewSelect[string]().
-				Options(huh.NewOptions("Remove")...).
-				Title("What's next?").Value(&nextAction),
-		),
-	).WithTheme(theme)
+	// theme := huh.ThemeBase16()
+	// theme.FieldSeparator = lipgloss.NewStyle().SetString("\n")
+	// theme.Help.FullKey.MarginTop(1)
 
-	err = f.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-	if nextAction == "Remove" {
-		_ = spinner.New().Title("Removing Packages: list...").Style(spinnerStyle).Run()
-		fmt.Println("Packages Removed.")
-	}
+	// var action Action
+	// f := huh.NewForm(
+	// 	huh.NewGroup(
+	// 		huh.NewSelect[Action]().
+	// 			Value(&action).
+	// 			Options(
+	// 				huh.NewOption("Icons", Icons),
+	// 				huh.NewOption("Themes", Themes),
+	// 				huh.NewOption("Config", Config),
+	// 				huh.NewOption("Spinner", Spin),
+	// 				huh.NewOption("Cancel", Cancel),
+	// 			).
+	// 			Title("Choose Folder"),
+	// 	),
+	// ).WithTheme(theme)
+	// err := f.Run()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// var packages []string
+	// switch action {
+	// case Icons:
+	// 	fmt.Println("Icons Action")
+	// 	packages = GetPackages("icons")
+	// 	fmt.Println(packages)
+	// case Themes:
+	// 	fmt.Println("Themes Action")
+	// 	packages = GetPackages("themes")
+	// 	fmt.Println(packages)
+	// case Config:
+	// 	fmt.Println("Config")
+	// 	packages = GetPackages("config")
+	// 	fmt.Println(packages)
+	// case Spin:
+	// 	fmt.Println("Spinner Example")
+	// 	_ = spinner.New().Title("Spinner example...").Style(spinnerStyle).Run()
+	// case Cancel:
+	// 	fmt.Println("Cancelling...")
+	// 	os.Exit(1)
+	// }
+	// // fmt.Printf("Selected themes are: \n%s \n%s \n ", highlight.Render("theme_one"), highlight.Render("theme_two"))
+
+	// var nextAction string
+	// f = huh.NewForm(
+	// 	huh.NewGroup(
+	// 		huh.NewSelect[string]().
+	// 			Options(huh.NewOptions("packages")...).
+	// 			Title("What's next?").Value(&nextAction),
+	// 	),
+	// ).WithTheme(theme)
+
+	// err = f.Run()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// if nextAction == "Remove" {
+	// 	_ = spinner.New().Title("Removing Packages: list...").Style(spinnerStyle).Run()
+	// 	fmt.Println("Packages Removed.")
+	// }
 
 }
 
