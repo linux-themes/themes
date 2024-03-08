@@ -246,27 +246,3 @@ func set_command() {
 func remove_command() {
 	components.MenuSelection()
 }
-func Remove(packages []string, category string) {
-	for _, packag := range packages {
-		is_valid, err := Exists(packag)
-		if err != nil {
-			fmt.Println(err)
-		}
-		if is_valid {
-			fmt.Println("directory to be removed: " + packag)
-			// if err := os.Remove(""); err != nil {
-			// 	fmt.Println(err.Error())
-			// }
-		}
-	}
-}
-func Exists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, err
-}
