@@ -190,6 +190,10 @@ func install_command(arguments []string) {
 			InDevelopment()
 			return
 		}
+		if arguments[2] == "offical" {
+			InDevelopment()
+			return
+		}
 		return
 	}
 
