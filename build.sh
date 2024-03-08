@@ -1,56 +1,32 @@
+sudo apt-get install -y gcc dpkg-dev gpg
+
+
+#### Create binary
+
+
 # <package-name>_<version>-<release-number>_<architecture>
+# themes_0.0.1-1_x86_64 
+# themes_0.0.1-1_x86_64.deb 
+mkdir -p themes_0.0.1-1_x86_64/usr/bin/
+mkdir -p themes_0.0.1-1_x86_64/DEBIAN/
+cp themes_0.0.1-1_x86_64/usr/bin .
 
-$PACKAGE_NAME="hello-world"
-$VERSION=
-$RELEASE_NUMBER=
-$ARCHITECTURE=
-$FILE_NAME=$PACKAGE_NAME_$VERSION-$RELEASE_NUMBER_$ARCHITECTURE
-
-mkdir -p ~/example/$FILE_NAME
-cd ~/example/$FILE_NAME
-
-mkdir -p usr/bin
-cp ~/example/$PACKAGE_NAME-program/$PACKAGE_NAME usr/bin/.
-
-mkdir -p ~/example/$FILE_NAME/DEBIAN
-
-echo "Package: hello-world
+echo "Package: themes
 Version: 0.0.1
 Maintainer: example <example@example.com>
 Depends: libc6
 Architecture: amd64
-Homepage: http://example.com
+Homepage: http://linuxthemes.org
 Description: A program that prints hello" \
-> ~/example/$FILE_NAME/DEBIAN/control
-# Expected
-# ~/example/$FILE_NAME/usr/bin/hello-world
-# ~/example/$FILE_NAME/DEBIAN/control
+> $PWD/themes_0.0.1-1_x86_64/DEBIAN/control
 
-# Build
-dpkg --build ~/example/$FILE_NAME
-# Inspect 
-# dpkg-deb --info ~/example/hello-world_0.0.1.deb
-# new Debian package, version 2.0.
-# size 2832 bytes: control archive=336 bytes.
-#     182 bytes,     7 lines      control
-# Package: hello-world
-# Version: 0.0.1
-# Maintainer: example <example@example.com>
-# Depends: libc6
-# Architecture: amd64
-# Homepage: http://example.com
-# Description: A program that prints hello
+dpkg --build $PWD/themes_0.0.1-1_x86_64
+dpkg --info $PWD/themes_0.0.1-1_x86_64.deb
+dpkg --contents $PWD/themes_0.0.1-1_x86_64.deb
 
-# View Content
-# dpkg-deb --contents ~/example/hello-world_0.0.1.deb
+mkdir -p themes/apt-repo/pool/main/
+cp $PWD/themes_0.0.1-1_x86_64.deb $PWD/themes/apt-repo/pool/main/ 
 
-
-# This package can then be installed using the -f option under apt-get install:
-sudo apt-get install -f ~/example/hello-world_0.0.1-1_amd64.deb
-# Then once installed, you can verify it works with commands like:
-which hello-world
-# and
-hello-world
-# which should output /usr/bin/hello-world and hello packaged world respectively.
-# Finally, if you want to remove it, you can run:
-sudo apt-get remove hello-world
+mkdir -p themes/apt-repo/dists/stable/main/binary-amd64/z
+dpkg-scanpackages --arch amd64 $PWD/themes/apt-repo/pool/ > $PWD/themes/apt-repo/dists/stable/main/binary-amd64/Packages
+cat $PWD/themes/apt-repo/dists/stable/main/binary-amd64/Packages | gzip -9 > $PWD/themes/apt-repo/dists/stable/main/binary-amd64/Packages.gz
