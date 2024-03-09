@@ -14,9 +14,6 @@ mkdir -p $APT_REPOSITORY/pool/main/
 GOARCH=amd64 GOOS=linux go build -o bin/themes.exe
 cp -r  $BIN/themes.exe $BUILD_PATH/usr/bin/themes
 
-
-
-
 echo "Package: themes
 Version: 0.0.1
 Maintainer: jordan sudo-adduser-jordan@github.com
