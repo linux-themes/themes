@@ -52,45 +52,8 @@ func NewStyles(lg *lipgloss.Renderer) *Styles {
 	return &s
 }
 
-// type state int
-
-// const (
-// 	statusNormal state = iota
-// 	stateDone
-// )
-
-// type Model struct {
-// 	state  state
-// 	lg     *lipgloss.Renderer
-// 	styles *Styles
-// 	form   *huh.Form
-// 	width  int
-// }
-
-type Option int
-
-const (
-	Icons Option = iota + 1
-	Themes
-	Configs
-)
-
-func (option Option) String() string {
-	switch option {
-	case Icons:
-		return ".icons"
-	case Themes:
-		return ".themes"
-	case Configs:
-		return ".config"
-	default:
-		return ""
-	}
-}
-
 type Command struct {
 	Type     string
-	Option   Option
 	Packages []string
 }
 
@@ -101,7 +64,8 @@ func RemoveCommand() {
 	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewSelect[string]().
-				Options(huh.NewOptions(ICONS, THEMES, CONFIG)...).
+				Options(huh.NewOptions(".icons", ".themes", ".config")...).
+				// add .home option
 				Title("Linux Themes Remover").
 				Value(&command.Type),
 		),
@@ -168,7 +132,7 @@ func GetPackages(category string) []string {
 	if category == ".config" {
 		path = CONFIG_PATH
 	}
-
+	fmt.Println(path)
 	packages := []string{}
 	files, err := os.ReadDir(path)
 	if err != nil {

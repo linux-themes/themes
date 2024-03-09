@@ -2,7 +2,7 @@ BINARY_NAME=themes
 
 build:
 	mkdir -p  bin
-	GOARCH=amd64 GOOS=linux go build  -o bin/${BINARY_NAME}
+	GOARCH=amd64 GOOS=linux go build  -o bin/themes.exe
 run:
 	./bin/themes.exe
 	# ./bin/themes help
@@ -20,6 +20,8 @@ run:
 	# ./bin/themes remove themes package_1
 debian:
 	./scripts/build.sh
+	sudo nala remove themes -y
+	sudo nala install ./bin/themes_0.0.1-1_x86_64.deb -y
 clean:
 	go clean
 	rm -rf bin
