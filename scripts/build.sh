@@ -17,7 +17,7 @@ cp -r  $BIN/themes.exe $BUILD_PATH/usr/bin/themes
 echo "Package: themes
 Version: 0.0.1
 Maintainer: jordan sudo-adduser-jordan@github.com
-Depends: libc6
+Depends: libc6, tree, mv, tar, golang-go
 Architecture: amd64
 Homepage: http://linuxthemes.org
 Description: Install and manage themes and configurations" \
