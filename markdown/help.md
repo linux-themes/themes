@@ -16,6 +16,7 @@
 - 🌟 themes [list]()themes
 - 🌟 themes [list]()config
 
+<!--
 # create
     🔨 Create linux-themes project:
  
@@ -23,12 +24,12 @@
 - 🌟 themes [create]()themes [package_name]()
 - 🌟 themes [create]()config [package_name]()
 
-
 # build
     📦 Compile and minimize linux-themes project:
 
 - 🌟 themes [build]()icons [package_name]()
 - 🌟 themes [build]()themes [package_name]()
+-->
 
 # install
     📥 Install theme to folder:

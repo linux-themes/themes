@@ -1,9 +1,17 @@
-add .home
+// TODO
+// Set themes for specific DE
+// Supported DE - gnome, kde, xfce,
+
+// Set themes for specific configs - revist after .icons and .themes are released.
+// Supported configs - terminals, ulauncher
+
 add are you sure you want to delete x
 add set theme
 add official themes
 add version
 add apt automatic update
+
+
 
 
 
