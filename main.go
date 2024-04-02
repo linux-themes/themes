@@ -7,30 +7,17 @@ import (
 	"strings"
 )
 
-// COMMAND ENUMS
 const HELP = "help"
-const CREATE = "create"
-const BUILD = "build"
 const LIST = "list"
 const INSTALL = "install"
 const SET = "set"
 const REMOVE = "remove"
 
-// ENUMS
+const TAR = "tar"
 const ALL = "all"
 const ICONS = "icons"
 const THEMES = "themes"
 const CONFIG = "config"
-
-// PROGRAMS
-const TAR = "tar"
-const CAT = "cat"
-const COPY = "cp"
-const MOVE = "mv"
-const TOUCH = "touch"
-const RM_DIR = "rmdir"
-const RM_FILE = "rm"
-const MAKE_DIR = "mkdir"
 
 // PATHS
 func SetUser() string {
