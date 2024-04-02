@@ -1,6 +1,3 @@
 📦 [Intalled Themes]()
 
 # themes
-
-
-
