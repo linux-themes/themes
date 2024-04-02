@@ -48,7 +48,3 @@ var USER_PATH = HOME_PATH + "/" + USER
 var ICON_PATH = USER_PATH + "/.icons"
 var CONFIG_PATH = USER_PATH + "/.config"
 var THEME_PATH = USER_PATH + "/.themes"
-var TERMINAL_PATH = USER_PATH + "/.gnome/terminal/themes"
-var ULAUNCHER_PATH = USER_PATH + "/.config/ulauncher/user-themes"
-
-const TEST_PACKAGE = "https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz"
