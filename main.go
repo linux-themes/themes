@@ -14,7 +14,6 @@ const SET = "set"
 const REMOVE = "remove"
 
 const TAR = "tar"
-const ALL = "all"
 const ICONS = "icons"
 const THEMES = "themes"
 const CONFIG = "config"
