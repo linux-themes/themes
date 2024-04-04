@@ -63,7 +63,7 @@ func executeArguments() {
 	case INSTALL:
 		commands.InstallCommand(arguments)
 	case SET:
-		commands.SetCommand()
+		commands.SetCommand(arguments[2])
 	case REMOVE:
 		commands.RemoveCommand()
 	default:

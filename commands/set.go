@@ -1,43 +1,69 @@
 package commands
 
-func SetCommand() {
+import (
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
+)
+
+func SetCommand(category string) {
 	InDevelopment()
-
-	// option := ""
-	// if option == "icons" {
-	// 	fmt.Println("icons")
-	// }
-	// if option == "themes" {
-	// 	fmt.Println("themes")
-	// }
-
-	// envirnoment := ""
-	// switch envirnoment {
-	// case "gnome":
-	// 	fmt.Println("gnome")
-	// case "kde":
-	// 	fmt.Println("kde")
-	// case "xfce":
-	// 	fmt.Println("xfce")
+	// switch category {
+	// case ICONS:
+	// 	Set(category)
+	// case THEMES:
+	// 	Set(category)
 	// default:
-	// 	fmt.Println("Set Error.")
-	// 	os.Exit(0)
-	// }
-
-	// cmd := exec.Command("tar", "-xf")
-	// _, err := cmd.Output()
-	// if err != nil {
-	// 	fmt.Println(err.Error())
+	// 	HelpCommand()
 	// }
 }
 
+func Set(category string) {
+	desktop_enviroment := os.Getenv("XDG_SESSION_DESKTOP")
+	fmt.Println(desktop_enviroment)
+
+	icon_variable := "gnome"
+	theme_variable := "gnome"
+
+	switch desktop_enviroment {
+	case "gnome":
+		if category == ICONS {
+			cmd := exec.Command("gsettings",
+				"set",
+				"org.gnome.desktop.interface",
+				"icon-theme",
+				icon_variable)
+			if err := cmd.Run(); err != nil {
+				log.Fatal(err)
+			}
+		}
+		if category == THEMES {
+			cmd := exec.Command("gsettings",
+				"set",
+				"org.gnome.shell.extensions.user-theme",
+				"name",
+				theme_variable)
+			if err := cmd.Run(); err != nil {
+				log.Fatal(err)
+			}
+		}
+	case "kde":
+		fmt.Println("kde")
+	default:
+		fmt.Println("Set Error")
+	}
+}
+
+// user theme extensions must be enabled - add check
+// if 'variable' does not exist default 'Gnome' is set.
+
 // Gnome
-// Change GTK-Theme:
-// gsettings set org.gnome.desktop.interface gtk-theme "CoolestThemeOnEarth"
 // Change Icon-Theme:
-// gsettings set org.gnome.desktop.interface icon-theme 'MyIconTheme'
-// Change Window-Theme:
-// gsettings set org.gnome.desktop.wm.preferences theme "CoolestThemeOnEarth"
+// gsettings set org.gnome.desktop.interface icon-theme 'Gnome'
+// gsettings set org.gnome.desktop.interface icon-theme 'gicons'
+// Change Shell-Theme:
+// gsettings set org.gnome.shell.extensions.user-theme name "Zukitwo"
 
 // KDE
 // /usr/lib/plasma-changeicons breeze
