@@ -1,3 +1,0 @@
-📦 [Installed Config]()
-
-# config
