@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/charmbracelet/huh"
@@ -13,6 +15,11 @@ var setCmd = &cobra.Command{
 	Short: "Set selected theme",
 	Long:  `Set selected theme`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		home_path, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		icons := []huh.Option[string]{}
 		for index := 0; index < 10; index++ {
@@ -44,15 +51,36 @@ var setCmd = &cobra.Command{
 					Title("\nConfirm").
 					Options(
 						huh.NewOption("Cancel", 0),
-						huh.NewOption("Remove", 1).Selected(true),
+						huh.NewOption("Remove", 1),
 					),
 			),
-		).WithTheme(huh.ThemeCustom())
+		).WithTheme(huh.ThemeCharm())
 
-		err := form.Run()
+		err = form.Run()
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		cancel_option := true
+		if !cancel_option {
+			for _, option := range icons {
+				if option.Value == "true" {
+					fmt.Println("home path" + home_path)
+					break
+				}
+			}
+
+			for _, option := range themes {
+				if option.Value == "true" {
+
+					fmt.Println("home path" + home_path)
+					break
+				}
+			}
+		} else {
+			fmt.Println("Command Canceled")
+		}
+
 	},
 }
 

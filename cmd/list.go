@@ -19,10 +19,11 @@ const (
 )
 
 var listIconsCmd = &cobra.Command{
-	Use:   "icons",
-	Short: "List installed icons",
-	Long:  `List installed icons`,
-	Args:  cobra.ExactArgs(0),
+	Use:       "icons",
+	Short:     "List installed icons",
+	Long:      `List installed icons`,
+	ValidArgs: []string{"all"},
+	Args:      cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		home_path, err := os.UserHomeDir()
