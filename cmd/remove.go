@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 
@@ -22,9 +23,12 @@ var removeAllCmd = &cobra.Command{ // add confirmation
 		// }
 
 		// if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
+		fmt.Println(RED + "Icons removed." + RESET)
 		// 	log.Fatal(err)
 		// }
 		// if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
+		// fmt.Println("Themes removed.")
+		fmt.Println(RED + "Icons removed." + RESET)
 		// 	log.Fatal(err)
 		// }
 	},
