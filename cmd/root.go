@@ -18,8 +18,8 @@ func Execute() {
 
 	cc.Init(&cc.Config{
 		RootCmd:         rootCmd,
-		Headings:        cc.HiCyan + cc.Bold,
-		Commands:        cc.HiYellow + cc.Bold,
+		Headings:        cc.HiGreen + cc.Bold,
+		Commands:        cc.HiCyan + cc.Bold,
 		Example:         cc.Italic,
 		ExecName:        cc.Bold,
 		Flags:           cc.Bold,

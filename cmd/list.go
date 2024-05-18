@@ -50,9 +50,8 @@ var listIconsCmd = &cobra.Command{
 			}
 
 			if len(entries) == 0 {
-				fmt.Println("\tNo icons installed. To add an icon package:")
+				fmt.Println("\tNo icons installed.")
 				fmt.Println()
-				fmt.Println("\tthemes install icons gicons")
 			}
 
 			fmt.Println()
@@ -91,9 +90,8 @@ var listThemesCmd = &cobra.Command{
 			}
 
 			if len(entries) == 0 {
-				fmt.Println("\tNo themes installed. To add an theme package:")
+				fmt.Println("\tNo themes installed.")
 				fmt.Println()
-				fmt.Println("\tthemes install themes gtheme")
 			}
 
 			fmt.Println()
