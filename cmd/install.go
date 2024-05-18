@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/schollz/progressbar/v3"
@@ -75,12 +76,24 @@ var installIconsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		valid_links := []string{}
-		for _, link := range args { // add community repo source
-			if IsValidUrl(link) {
-				valid_links = append(valid_links, link)
-				fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
+
+		for _, packg := range args {
+			if offical_package, err := strconv.Atoi(packg); err == nil {
+				fmt.Printf("%q looks like a number.\n", packg)
+				if offical_package == 1 {
+					valid_links = append(valid_links, packages_offical_icons[1].link)
+				}
+
+				if offical_package == 2 {
+					valid_links = append(valid_links, packages_offical_themes[1].link)
+				}
 			} else {
-				fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
+				if IsValidUrl(packg) {
+					valid_links = append(valid_links, packg)
+					fmt.Println(GREEN + "Valid packg:\t" + CYAN + packg + RESET)
+				} else {
+					fmt.Println(RED + "Invalid packg:\t" + YELLOW + packg + RESET)
+				}
 			}
 		}
 

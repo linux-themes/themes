@@ -100,6 +100,28 @@ var listThemesCmd = &cobra.Command{
 		}
 	},
 }
+var listOfficalCmd = &cobra.Command{
+	Use:   "official",
+	Short: "List offical themes",
+	Long:  `List offical themes`,
+	Args:  cobra.ExactArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+
+		fmt.Println(GREEN + "Official Icons:" + RESET)
+		for _, v := range packages_offical_icons {
+			fmt.Println(CYAN + "\t" + v.name + RESET)
+			fmt.Println(v)
+		}
+
+		fmt.Println()
+
+		fmt.Println(GREEN + "Official Themes:" + RESET)
+		for _, v := range packages_offical_themes {
+			fmt.Println(CYAN + "\t" + v.name + RESET)
+			fmt.Println(v)
+		}
+	},
+}
 
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -107,6 +129,7 @@ var listCmd = &cobra.Command{
 	Long:  `List all installed themes and icons`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
+		listOfficalCmd.Run(cmd, args)
 		listIconsCmd.Run(cmd, args)
 		listThemesCmd.Run(cmd, args)
 		fmt.Println()
@@ -114,6 +137,7 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
+	listCmd.AddCommand(listOfficalCmd)
 	listCmd.AddCommand(listIconsCmd)
 	listCmd.AddCommand(listThemesCmd)
 
