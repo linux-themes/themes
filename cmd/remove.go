@@ -34,10 +34,12 @@ var removeAllCmd = &cobra.Command{ // add confirmation
 	},
 }
 
-var removeCmd = &cobra.Command{
-	Use:   "remove",
-	Short: "Remove packages",
-	Long:  `Remove packages`,
+var removeSelectedCmd = &cobra.Command{
+	Use:       "remove",
+	Short:     "Remove packages",
+	Long:      `Remove packages`,
+	ValidArgs: []string{"icons, themes"},
+	Args:      cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		icons := []huh.Option[string]{}
@@ -80,33 +82,52 @@ var removeCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		// cancel_option := true
-		// if !cancel_option {
-		// 	for _, option := range icons {
-		// 		if option.Value == "true" {
-		// 			if err := os.RemoveAll(home_path + "/.icons/" + option.Value); err != nil {
-		// 				log.Fatal(err)
-		// 			}
-		// 			break
-		// 		}
-		// 	}
+		for _, option := range icons {
+			fmt.Println(option.String())
+		}
 
-		// 	for _, option := range themes {
-		// 		if option.Value == "true" {
-		// 			if err := os.RemoveAll(home_path + "/.themes/" + option.Value); err != nil {
-		// 				log.Fatal(err)
-		// 			}
-		// 			break
-		// 		}
-		// 	}
-		// } else {
-		// 	fmt.Println("Command Canceled")
-		// }
+		for _, option := range themes {
+			fmt.Println(option.String())
+		}
+
+	},
+}
+
+var removeCmd = &cobra.Command{
+	Use:   "remove",
+	Short: "remove theme",
+	Long:  `remove theme`,
+	Args:  cobra.MaximumNArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+
+		fmt.Println(args)
+
+		if len(args) == 0 {
+			removeSelectedCmd.Run(cmd, args)
+		}
+
+		if args[0] == "all" {
+			removeAllCmd.Run(cmd, args)
+		}
+
+		if args[0] == "icons" {
+			removeSelectedCmd.Run(cmd, args)
+		}
+
+		if args[0] == "themes" {
+			removeSelectedCmd.Run(cmd, args)
+		}
 
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(removeAllCmd)
+	removeCmd.AddCommand(removeAllCmd)
+	removeCmd.AddCommand(removeSelectedCmd)
+
+	removeCmd.DisableFlagParsing = true
+	removeCmd.InitDefaultHelpFlag()
+	removeCmd.Flags().MarkHidden("help")
+
 	rootCmd.AddCommand(removeCmd)
 }
