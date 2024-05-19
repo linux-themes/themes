@@ -1,8 +1,6 @@
 package main
 
-import (
-	"themes/cmd"
-)
+import "github.com/linux-themes/themes/cmd"
 
 func main() {
 	cmd.Execute()

@@ -10,3 +10,5 @@ themes install icons https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main
 
 
 
+git tag v0.0.1
+git push origin v0.0.1
