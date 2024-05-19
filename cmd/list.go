@@ -106,18 +106,18 @@ var listOfficalCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		fmt.Println(GREEN + "Official Icons:" + RESET)
-		for _, v := range packages_offical_icons {
-			fmt.Println(CYAN + "\t" + v.name + RESET)
-			fmt.Println(v)
-		}
+		// for _, v := range packages_offical_icons {
+		// fmt.Println(CYAN + "\t" + v.name + RESET)
+		// fmt.Println(v)
+		// }
 
 		fmt.Println()
 
 		fmt.Println(GREEN + "Official Themes:" + RESET)
-		for _, v := range packages_offical_themes {
-			fmt.Println(CYAN + "\t" + v.name + RESET)
-			fmt.Println(v)
-		}
+		// for _, v := range packages_offical_themes {
+		// fmt.Println(CYAN + "\t" + v.name + RESET)
+		// fmt.Println(v)
+		// }
 	},
 }
 

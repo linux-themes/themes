@@ -81,11 +81,11 @@ var installIconsCmd = &cobra.Command{
 			if offical_package, err := strconv.Atoi(packg); err == nil {
 				fmt.Printf("%q looks like a number.\n", packg)
 				if offical_package == 1 {
-					valid_links = append(valid_links, packages_offical_icons[1].link)
+					// valid_links = append(valid_links, packages_offical_icons[1].link)
 				}
 
 				if offical_package == 2 {
-					valid_links = append(valid_links, packages_offical_themes[1].link)
+					// valid_links = append(valid_links, packages_offical_themes[1].link)
 				}
 			} else {
 				if IsValidUrl(packg) {
