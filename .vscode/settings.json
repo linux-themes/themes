@@ -1,3 +1,5 @@
 {
-    "editor.defaultFormatter": "golang.go"
+    "editor.defaultFormatter": "golang.go",
+    "testing.alwaysRevealTestOnStateChange": true,
+    "go.testExplorer.alwaysRunBenchmarks": true
 }
