@@ -1,4 +1,5 @@
-module themes
+// module github.com/linux-themes/themes
+module main
 
 go 1.19
 
