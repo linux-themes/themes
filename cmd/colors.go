@@ -1,4 +1,4 @@
-package styles
+package cmd
 
 const (
 	BLUE      = "\033[1;34m"

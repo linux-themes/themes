@@ -18,13 +18,13 @@ var removeAllCmd = &cobra.Command{
 	Args:      cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if args[0] == "icons" {
+		// if args[0] == "icons" {
 
-		}
+		// }
 
-		if args[0] == "themes" {
+		// if args[0] == "themes" {
 
-		}
+		// }
 
 		home_path, err := os.UserHomeDir()
 		if err != nil {
