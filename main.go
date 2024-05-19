@@ -1,7 +1,7 @@
 package main
 
 import (
-	"main/cmd"
+	"themes/cmd"
 )
 
 func main() {
