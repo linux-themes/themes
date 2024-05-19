@@ -14,7 +14,7 @@ Manage your linux desktop themes
 ## Install
 
 ```sh
-	go install github.com/linux-themes/themes
+	go install github.com/linux-themes/themes@latest
 ```
 
 ## Use
@@ -22,6 +22,7 @@ Manage your linux desktop themes
 ```sh
 	themes list all
 	themes install 1 2 3
+	themes remove
 ```
 
 ## Contributing
