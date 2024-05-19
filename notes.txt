@@ -1,14 +1,10 @@
 
-gotest
 huh
 progress
 cobra
+
 cobra-cli
-
-themes install icons https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
-
-
-
+gotest
 
 git tag v0.0.1
 git push origin v0.0.1
