@@ -1,5 +1,9 @@
 
-
+gotest
+huh
+progress
+cobra
+cobra-cli
 
 themes install icons https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
 
