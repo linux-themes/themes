@@ -1,12 +1,15 @@
 package main
 
-import "testing"
+import (
+	"log"
+	"os"
+	"testing"
+)
 
 func Test_Remove(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
-		// TODO: Add test cases.
 		{"Test: themes remove all"},
 		{"Test: themes remove icons"},
 		{"Test: themes remove themes"},
@@ -14,6 +17,21 @@ func Test_Remove(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			main()
+
+			home_path, err := os.UserHomeDir()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			_, err = os.Stat(home_path + "/.icons")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			_, err = os.Stat(home_path + "/.themes")
+			if err != nil {
+				log.Fatal(err)
+			}
 		})
 	}
 }
@@ -22,7 +40,6 @@ func Test_List(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
-		// TODO: Add test cases.
 		{"Test: themes list all"},
 		{"Test: themes list icons"},
 		{"Test: themes list themes"},
@@ -39,7 +56,6 @@ func Test_Set(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
-		// TODO: Add test cases.
 		{"Test: themes set"},
 		{"Test: themes set icons"},
 		{"Test: themes set themes"},
@@ -60,7 +76,6 @@ func Test_Install(t *testing.T) {
 		{"Test: themes install package"},
 		{"Test: themes install url and package"},
 		{"Test: themes install invalidurl and invalidpackage"},
-		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
