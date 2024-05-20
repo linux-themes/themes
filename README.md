@@ -2,7 +2,7 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-![example workflow](https://github.com/linux-themes/themes/.github/workflows/go.yml/badge.svg)
+![testing](https://github.com/linux-themes/themes/actions/workflows/go.yml/badge.svg)
 
 Manage your linux desktop themes
 
