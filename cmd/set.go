@@ -53,7 +53,7 @@ var setCmd = &cobra.Command{
 						huh.NewOption("Remove", 1),
 					),
 			),
-		).WithTheme(huh.ThemeCharm())
+		).WithTheme(ThemeCustom())
 
 		err := form.Run()
 		if err != nil {
