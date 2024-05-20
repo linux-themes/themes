@@ -22,7 +22,7 @@ jobs:
           go-version: '1.21.x'  
       - name: Install dependencies
         run: |
-            apt install tar  
+            sudo apt install tar  
             go install github.com/rakyll/gotest@latest
 
       - name: Build
