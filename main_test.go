@@ -168,13 +168,13 @@ func install_icons_url() {
 		log.Fatalf("command.Run() failed: %v\n", err)
 	}
 
-	home_path, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil { //fix
-		log.Fatal(err.Error())
-	}
+	// home_path, err := os.UserHomeDir()
+	// if err != nil {
+	// 	log.Fatal(err.Error())
+	// }
+	// if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil { //fix
+	// 	log.Fatal(err.Error())
+	// }
 }
 
 func install_themes_url() {
