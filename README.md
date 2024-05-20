@@ -1,6 +1,7 @@
 # Themes
 
 ![Build Status](https://github.com/linux-themes/themes/actions/workflows/tests.yml/badge.svg)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/linux-themes/themes)
 ![Repo Size](https://img.shields.io/github/repo-size/linux-themes/themes)
 
 Manage your linux desktop themes
