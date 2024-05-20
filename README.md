@@ -2,6 +2,8 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
+![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+
 Manage your linux desktop themes
 
 ## Table of Contents
