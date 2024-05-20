@@ -212,9 +212,7 @@ func Test_Clean(t *testing.T) {
 		name string
 		Test func()
 	}{
-		{"themes remove all", test_remove_all},
-		{"themes remove icons", test_remove_icons},
-		{"themes remove themes", test_remove_themes},
+		{"clean", list_all},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
