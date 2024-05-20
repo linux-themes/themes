@@ -89,25 +89,40 @@ func Test_List(t *testing.T) {
 		name string
 		Test func()
 	}{
-		{"themes list all", list_all},
+		{"themes list", list_all},
 		{"themes list icons", list_icons},
 		{"themes list official", list_themes},
 		{"themes list themes", list_official},
 	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			main()
-			test.Test()
+			if _, err = os.Stat(home_path + "/.icons"); err != nil {
+				log.Fatal(err.Error())
+			}
+			if _, err = os.Stat(home_path + "/.themes"); err != nil {
+				log.Fatal(err.Error())
+			}
 		})
 	}
 }
 
-func install_all()             {}
-func install_icons_url()       {}
-func install_themes_url()      {}
-func install_icons_official()  {}
-func install_themes_official() {}
-func install_invalid()         {}
+func install_all() {
+	str := strings.Split("./bin/themes.exe install", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err == nil {
+		log.Fatalf("command.Run() failed(in this case succeeded)")
+	}
+}
+func install_icons_url()  {}
+func install_themes_url() {}
+func install_invalid()    {}
 
 func Test_Install_Command(t *testing.T) {
 	tests := []struct {
@@ -115,15 +130,12 @@ func Test_Install_Command(t *testing.T) {
 		Test func()
 	}{
 		{"themes install", install_all},
-		{"themes install invalidurl and invalidpackage", install_invalid},
 		{"themes install url", install_icons_url},
 		{"themes install package", install_themes_url},
-		{"themes install url and package", install_icons_official},
-		{"themes install invalidurl and invalidpackage", install_themes_official},
+		{"themes install invalid invalid invalid valid", install_invalid},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			main()
 			test.Test()
 		})
 	}
