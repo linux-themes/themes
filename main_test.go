@@ -79,10 +79,63 @@ func Test_Install_Program(t *testing.T) {
 	}
 }
 
-func list_all()      {}
-func list_icons()    {}
-func list_themes()   {}
-func list_official() {}
+func list_all() {
+	str := strings.Split("./bin/themes.exe list", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if _, err = os.Stat(home_path + "/.icons"); err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if _, err = os.Stat(home_path + "/.themes"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+func list_icons() {
+	str := strings.Split("./bin/themes.exe list icons", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if _, err = os.Stat(home_path + "/.icons"); err != nil {
+		log.Fatal(command)
+		log.Fatal(err.Error())
+	}
+}
+
+func list_themes() {
+	str := strings.Split("./bin/themes.exe list themes", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if _, err = os.Stat(home_path + "/.themes"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
 
 func Test_List(t *testing.T) {
 	tests := []struct {
@@ -91,23 +144,12 @@ func Test_List(t *testing.T) {
 	}{
 		{"themes list", list_all},
 		{"themes list icons", list_icons},
-		{"themes list official", list_themes},
-		{"themes list themes", list_official},
-	}
-
-	home_path, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err.Error())
+		{"themes list themes", list_themes},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			if _, err = os.Stat(home_path + "/.icons"); err != nil {
-				log.Fatal(err.Error())
-			}
-			if _, err = os.Stat(home_path + "/.themes"); err != nil {
-				log.Fatal(err.Error())
-			}
+			test.Test()
 		})
 	}
 }
@@ -130,7 +172,7 @@ func install_icons_url() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil {
+	if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil { //fix
 		log.Fatal(err.Error())
 	}
 }
