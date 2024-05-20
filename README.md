@@ -4,6 +4,8 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/linux-themes/themes)
 ![Repo Size](https://img.shields.io/github/repo-size/linux-themes/themes)
 ![GitHub Release](https://img.shields.io/github/v/release/linux-themes/themes)
+![GitHub Tag](https://img.shields.io/github/v/tag/linux-themes/themes)
+
 
 
 Manage your linux desktop themes
