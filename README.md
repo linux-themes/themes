@@ -27,7 +27,7 @@ Manage your linux desktop themes
 
 ```sh
 	themes list all
-	themes install 21 https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
+	themes install https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
 	themes remove 
 ```
 
