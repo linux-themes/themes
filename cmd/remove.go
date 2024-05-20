@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
@@ -15,30 +14,37 @@ var removeAllCmd = &cobra.Command{
 	Short:     "Remove all packages from icons and themes",
 	Long:      `Remove all packages from icons and themes`,
 	ValidArgs: []string{"icons, themes"},
-	Args:      cobra.ExactArgs(1),
+	Args:      cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-
-		// if args[0] == "icons" {
-
-		// }
-
-		// if args[0] == "themes" {
-
-		// }
 
 		home_path, err := os.UserHomeDir()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
+		if len(args) == 0 {
+			if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
+				log.Fatal(err)
+			}
 			fmt.Println(RED + "Icons removed." + RESET)
-			log.Fatal(err)
-		}
-		if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
-			fmt.Println("Themes removed.")
-			fmt.Println(RED + "Icons removed." + RESET)
-			log.Fatal(err)
+			if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(RED + "Themes removed." + RESET)
+		} else {
+			if args[0] == "icons" {
+				if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(RED + "Icons removed." + RESET)
+			}
+
+			if args[0] == "themes" {
+				if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(RED + "Themes removed." + RESET)
+			}
 		}
 	},
 }
@@ -50,20 +56,33 @@ var removeIconsCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
+		home_path, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		entries, err := os.ReadDir(home_path + "/.icons")
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		icons := []huh.Option[string]{}
-		for index := 0; index < 10; index++ {
+		for _, entry := range entries {
 			option := huh.Option[string]{}
-			option.Key = "package " + strconv.Itoa(index)
+			option.Key = entry.Name()
+			option.Value = entry.Name()
 			option.Selected(false)
 			icons = append(icons, option)
 		}
 
 		var form_results int
+		var form_results_strings []string
 		form := huh.NewForm(
 			huh.NewGroup(
 				huh.NewMultiSelect[string]().
 					Title("\nIcons").
-					Options(icons...),
+					Options(icons...).
+					Value(&form_results_strings),
 
 				huh.NewSelect[int]().
 					Title("\nConfirm").
@@ -72,27 +91,30 @@ var removeIconsCmd = &cobra.Command{
 						huh.NewOption("Remove", 1),
 					).Value(&form_results),
 			),
-		).WithTheme(huh.ThemeCharm())
+		).WithTheme(ThemeCustom())
 
-		err := form.Run()
+		err = form.Run()
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		if form_results == 1 {
-			// home_path, err := os.UserHomeDir()
-			// if err != nil {
-			// log.Fatal(err)
-			// }
-			//
-			// if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
-			// fmt.Println(RED + "Icons removed." + RESET)
-			// log.Fatal(err)
-			// }
-		} else {
-			fmt.Print(YELLOW + "Command canceled." + RESET)
-		}
+			home_path, err := os.UserHomeDir()
+			if err != nil {
+				log.Fatal(err)
+			}
 
+			fmt.Println(YELLOW + "Icons removed: " + RESET)
+			for _, result := range form_results_strings {
+				if err := os.RemoveAll(home_path + "/.icons/" + result); err != nil {
+					fmt.Println(YELLOW + "Package does not exist: " + result + RESET)
+				} else {
+					fmt.Println(RED + "\t" + result + RESET)
+				}
+			}
+		} else {
+			fmt.Println(YELLOW + "Command canceled." + RESET)
+		}
 	},
 }
 
@@ -103,47 +125,65 @@ var removeThemesCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
+		home_path, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		entries, err := os.ReadDir(home_path + "/.themes")
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		themes := []huh.Option[string]{}
-		for index := 0; index < 10; index++ {
+		for _, entry := range entries {
 			option := huh.Option[string]{}
-			option.Key = "package " + strconv.Itoa(index)
+			option.Key = entry.Name()
+			option.Value = entry.Name()
 			option.Selected(false)
 			themes = append(themes, option)
 		}
 
 		var form_results int
+		var form_results_strings []string
 		form := huh.NewForm(
 			huh.NewGroup(
 				huh.NewMultiSelect[string]().
 					Title("\nThemes").
-					Options(themes...),
+					Options(themes...).
+					Value(&form_results_strings),
 
 				huh.NewSelect[int]().
 					Title("\nConfirm").
 					Options(
 						huh.NewOption("Cancel", 0).Selected(true),
 						huh.NewOption("Remove", 1),
-					),
+					).
+					Value(&form_results),
 			),
-		).WithTheme(huh.ThemeCharm())
+		).WithTheme(ThemeCustom())
 
-		err := form.Run()
+		err = form.Run()
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		if form_results == 1 {
-			// home_path, err := os.UserHomeDir()
-			// if err != nil {
-			// log.Fatal(err)
-			// }
-			//
-			// if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
-			// fmt.Println(RED + "Icons removed." + RESET)
-			// log.Fatal(err)
-			// }
+			home_path, err := os.UserHomeDir()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(YELLOW + "Themes removed: " + RESET)
+			for _, result := range form_results_strings {
+				if err := os.RemoveAll(home_path + "/.themes/" + result); err != nil {
+					fmt.Println(YELLOW + "Package does not exist: " + result + RESET)
+				} else {
+					fmt.Println(RED + "\t" + result + RESET)
+				}
+			}
 		} else {
-			fmt.Print(YELLOW + "Command canceled." + RESET)
+			fmt.Println(YELLOW + "Command canceled." + RESET)
 		}
 	},
 }

@@ -216,7 +216,7 @@ func Test_Install_Command(t *testing.T) {
 }
 
 func test_remove_all() {
-	str := strings.Split("./bin/themes.exe remove all icons", " ")
+	str := strings.Split("./bin/themes.exe remove all", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
 	if err != nil {
@@ -259,7 +259,7 @@ func test_remove_icons() {
 }
 
 func test_remove_themes() {
-	str := strings.Split("./bin/themes.exe remove all icons", " ")
+	str := strings.Split("./bin/themes.exe remove all themes", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
 	if err != nil {
