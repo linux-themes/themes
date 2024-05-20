@@ -3,85 +3,77 @@ package main
 import (
 	"log"
 	"os"
+	"os/exec"
+	"strings"
 	"testing"
 )
 
-type TestFunction func()
+func install_build() {
+	str := strings.Split("mkdir -p bin", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
 
-func install_build()      {}
-func install_local()      {}
-func install_repository() {}
+	str = strings.Split("go build -o bin/themes.exe", " ")
+	command = exec.Command(str[0], str[1:]...)
+	err = command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+	if _, err = os.Stat("./bin/themes.exe"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
 
-func Test_Install(t *testing.T) {
+func install_local() {
+	str := strings.Split("go install", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if _, err = os.Stat(home_path + "/go/bin/"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func install_repository() {
+	str := strings.Split("go install -x github.com/linux-themes/themes", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if _, err = os.Stat(home_path + "/go/bin/"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func Test_Install_Program(t *testing.T) {
 	tests := []struct {
 		name string
-		Test TestFunction
+		Test func()
 	}{
-		{"Test: build", install_build},
-		{"Test: install source", install_local},
-		{"Test: install repository", install_repository},
+		{"build", install_build},
+		{"install source", install_local},
+		{"install repository", install_repository},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			main()
-			test.Test()
-		})
-	}
-}
-
-func test_remove_all() {
-	home_path, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = os.Stat(home_path + "/.icons")
-	if err == nil {
-		log.Fatal(err)
-	}
-
-	_, err = os.Stat(home_path + "/.themes")
-	if err == nil {
-		log.Fatal(err)
-	}
-}
-
-func test_remove_icons() {
-	home_path, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = os.Stat(home_path + "/.icons")
-	if err == nil {
-		log.Fatal(err)
-	}
-}
-
-func test_remove_themes() {
-	home_path, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = os.Stat(home_path + "/.themes")
-	if err == nil {
-		log.Fatal(err)
-	}
-}
-
-func Test_Remove(t *testing.T) {
-	tests := []struct {
-		name string
-		Test TestFunction
-	}{
-		{"Test: themes remove all", test_remove_all},
-		{"Test: themes remove icons", test_remove_icons},
-		{"Test: themes remove themes", test_remove_themes},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			main()
 			test.Test()
 		})
 	}
@@ -95,33 +87,12 @@ func list_official() {}
 func Test_List(t *testing.T) {
 	tests := []struct {
 		name string
-		Test TestFunction
+		Test func()
 	}{
-		{"Test: themes list all", list_all},
-		{"Test: themes list icons", list_icons},
-		{"Test: themes list official", list_themes},
-		{"Test: themes list themes", list_official},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			main()
-			test.Test()
-		})
-	}
-}
-
-func set_all()    {}
-func set_icons()  {}
-func set_themes() {}
-
-func Test_Set(t *testing.T) {
-	tests := []struct {
-		name string
-		Test TestFunction
-	}{
-		{"Test: themes set", set_all},
-		{"Test: themes set icons", set_icons},
-		{"Test: themes set themes", set_themes},
+		{"themes list all", list_all},
+		{"themes list icons", list_icons},
+		{"themes list official", list_themes},
+		{"themes list themes", list_official},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -141,18 +112,112 @@ func install_invalid()         {}
 func Test_Install_Command(t *testing.T) {
 	tests := []struct {
 		name string
-		Test TestFunction
+		Test func()
 	}{
-		{"Test: themes install", install_all},
-		{"Test: themes install invalidurl and invalidpackage", install_invalid},
-		{"Test: themes install url", install_icons_url},
-		{"Test: themes install package", install_themes_url},
-		{"Test: themes install url and package", install_icons_official},
-		{"Test: themes install invalidurl and invalidpackage", install_themes_official},
+		{"themes install", install_all},
+		{"themes install invalidurl and invalidpackage", install_invalid},
+		{"themes install url", install_icons_url},
+		{"themes install package", install_themes_url},
+		{"themes install url and package", install_icons_official},
+		{"themes install invalidurl and invalidpackage", install_themes_official},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			main()
+			test.Test()
+		})
+	}
+}
+
+func test_remove_all() {
+	str := strings.Split("./bin/themes.exe remove all icons", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err.Error())
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = os.Stat(home_path + "/.icons")
+	if err == nil {
+		log.Fatal(err)
+	}
+
+	_, err = os.Stat(home_path + "/.themes")
+	if err == nil {
+		log.Fatal(err)
+	}
+}
+
+func test_remove_icons() {
+	str := strings.Split("./bin/themes.exe remove all icons", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err.Error())
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = os.Stat(home_path + "/.icons")
+	if err == nil {
+		log.Fatal(err)
+	}
+}
+
+func test_remove_themes() {
+	str := strings.Split("./bin/themes.exe remove all icons", " ")
+	command := exec.Command(str[0], str[1:]...)
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err.Error())
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = os.Stat(home_path + "/.themes")
+	if err == nil {
+		log.Fatal(err)
+	}
+}
+
+func Test_Remove_Command(t *testing.T) {
+	tests := []struct {
+		name string
+		Test func()
+	}{
+		{"themes remove all", test_remove_all},
+		{"themes remove icons", test_remove_icons},
+		{"themes remove themes", test_remove_themes},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			test.Test()
+		})
+	}
+}
+
+func Test_Clean(t *testing.T) {
+	tests := []struct {
+		name string
+		Test func()
+	}{
+		{"themes remove all", test_remove_all},
+		{"themes remove icons", test_remove_icons},
+		{"themes remove themes", test_remove_themes},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
 			test.Test()
 		})
 	}
