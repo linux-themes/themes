@@ -162,7 +162,6 @@ func install_icons_url() {
 		"https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
 	}
 	command := exec.Command(name, str...)
-	log.Printf("Testing command: %s", command.String())
 	err := command.Run()
 	if err != nil {
 		log.Fatalf("command.Run() failed: %v\n", err)
@@ -185,7 +184,6 @@ func install_themes_url() {
 		"https://github.com/linux-themes/themes-official/raw/main/themes/marble-shell.tar.gz",
 	}
 	command := exec.Command(name, str...)
-	log.Printf("Testing command: %s", command.String())
 	err := command.Run()
 	if err != nil {
 		log.Fatalf("command.Run() failed: %v\n", err)
