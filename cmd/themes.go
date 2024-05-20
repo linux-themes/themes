@@ -6,20 +6,12 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// Theme is a collection of styles for components of the form.
-// Themes can be applied to a form using the WithTheme option.
-type Theme struct {
-	Form           lipgloss.Style
-	Group          lipgloss.Style
-	FieldSeparator lipgloss.Style
-	Blurred        FieldStyles
-	Focused        FieldStyles
-	Help           help.Styles
-}
+type CustomTheme huh.Theme
+type CustomFieldStyles huh.FieldStyles
+type CustomTextInputStyles huh.TextInputStyles
 
-// copy returns a copy of a theme with all children styles copied.
-func (t Theme) Copy() Theme {
-	return Theme{
+func (t CustomTheme) Copy() CustomTheme {
+	return CustomTheme{
 		Form:           t.Form.Copy(),
 		Group:          t.Group.Copy(),
 		FieldSeparator: t.FieldSeparator.Copy(),
@@ -37,49 +29,8 @@ func (t Theme) Copy() Theme {
 	}
 }
 
-// FieldStyles are the styles for input fields.
-type FieldStyles struct {
-	Base           lipgloss.Style
-	Title          lipgloss.Style
-	Description    lipgloss.Style
-	ErrorIndicator lipgloss.Style
-	ErrorMessage   lipgloss.Style
-
-	// Select styles.
-	SelectSelector lipgloss.Style // Selection indicator
-	Option         lipgloss.Style // Select options
-
-	// Multi-select styles.
-	MultiSelectSelector lipgloss.Style
-	SelectedOption      lipgloss.Style
-	SelectedPrefix      lipgloss.Style
-	UnselectedOption    lipgloss.Style
-	UnselectedPrefix    lipgloss.Style
-
-	// Textinput and teatarea styles.
-	TextInput TextInputStyles
-
-	// Confirm styles.
-	FocusedButton lipgloss.Style
-	BlurredButton lipgloss.Style
-
-	// Card styles.
-	Card      lipgloss.Style
-	NoteTitle lipgloss.Style
-	Next      lipgloss.Style
-}
-
-// TextInputStyles are the styles for text inputs.
-type TextInputStyles struct {
-	Cursor      lipgloss.Style
-	Placeholder lipgloss.Style
-	Prompt      lipgloss.Style
-	Text        lipgloss.Style
-}
-
-// copy returns a copy of a TextInputStyles with all children styles copied.
-func (t TextInputStyles) Copy() TextInputStyles {
-	return TextInputStyles{
+func (t CustomTextInputStyles) Copy() CustomTextInputStyles {
+	return CustomTextInputStyles{
 		Cursor:      t.Cursor.Copy(),
 		Placeholder: t.Placeholder.Copy(),
 		Prompt:      t.Prompt.Copy(),
@@ -87,9 +38,8 @@ func (t TextInputStyles) Copy() TextInputStyles {
 	}
 }
 
-// copy returns a copy of a FieldStyles with all children styles copied.
-func (f FieldStyles) Copy() FieldStyles {
-	return FieldStyles{
+func (f CustomFieldStyles) Copy() CustomFieldStyles {
+	return CustomFieldStyles{
 		Base:                f.Base.Copy(),
 		Title:               f.Title.Copy(),
 		Description:         f.Description.Copy(),
