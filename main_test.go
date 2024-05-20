@@ -169,26 +169,6 @@ func install_themes_url() {
 
 func install_invalid() {
 
-	name := "./bin/themes.exe"
-	str := []string{
-		"install",
-		"icons",
-		"https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
-	}
-	command := exec.Command(name, str...)
-	log.Printf("Testing command: %s", command.String())
-	err := command.Run()
-	if err != nil {
-		log.Fatalf("command.Run() failed: %v\n", err)
-	}
-
-	home_path, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil {
-		log.Fatal(err.Error())
-	}
 }
 
 func Test_Install_Command(t *testing.T) {
@@ -196,10 +176,9 @@ func Test_Install_Command(t *testing.T) {
 		name string
 		Test func()
 	}{
-		// {"themes install", install_all},
-		// {"themes install icons url", install_icons_url},
+		{"themes install icons url", install_icons_url},
 		{"themes install themes url", install_themes_url},
-		// {"themes install invalid invalid invalid valid", install_invalid},
+		{"themes install invalid invalid invalid valid", install_invalid},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
