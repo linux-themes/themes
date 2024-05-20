@@ -20,15 +20,15 @@ Manage your linux desktop themes
 ## Install
 
 ```sh
-	go install github.com/linux-themes/themes@latest
+go install github.com/linux-themes/themes@latest
 ```
 
 ## Use
 
 ```sh
-	themes list all
-	themes install https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
-	themes remove 
+themes list all
+themes install https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
+themes remove 
 ```
 
 ## Contributing
