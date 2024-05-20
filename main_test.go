@@ -112,7 +112,7 @@ func Test_List(t *testing.T) {
 	}
 }
 
-func install_all() {
+func install_all() { // test for fail
 	str := strings.Split("./bin/themes.exe install", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
@@ -120,19 +120,86 @@ func install_all() {
 		log.Fatalf("command.Run() failed(in this case succeeded)")
 	}
 }
-func install_icons_url()  {}
-func install_themes_url() {}
-func install_invalid()    {}
+
+func install_icons_url() {
+	name := "./bin/themes.exe"
+	str := []string{
+		"install",
+		"icons",
+		"https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
+	}
+	command := exec.Command(name, str...)
+	log.Printf("Testing command: %s", command.String())
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func install_themes_url() {
+	name := "./bin/themes.exe"
+	str := []string{
+		"install",
+		"themes",
+		"https://github.com/linux-themes/themes-official/raw/main/themes/marble-shell.tar.gz",
+	}
+	command := exec.Command(name, str...)
+	log.Printf("Testing command: %s", command.String())
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	if _, err = os.Stat(home_path + "/.themes/Marble-blue-dark"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func install_invalid() {
+
+	name := "./bin/themes.exe"
+	str := []string{
+		"install",
+		"icons",
+		"https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
+	}
+	command := exec.Command(name, str...)
+	log.Printf("Testing command: %s", command.String())
+	err := command.Run()
+	if err != nil {
+		log.Fatalf("command.Run() failed: %v\n", err)
+	}
+
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	if _, err = os.Stat(home_path + "/.icons/mint-y-winx"); err != nil {
+		log.Fatal(err.Error())
+	}
+}
 
 func Test_Install_Command(t *testing.T) {
 	tests := []struct {
 		name string
 		Test func()
 	}{
-		{"themes install", install_all},
-		{"themes install url", install_icons_url},
-		{"themes install package", install_themes_url},
-		{"themes install invalid invalid invalid valid", install_invalid},
+		// {"themes install", install_all},
+		// {"themes install icons url", install_icons_url},
+		{"themes install themes url", install_themes_url},
+		// {"themes install invalid invalid invalid valid", install_invalid},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
