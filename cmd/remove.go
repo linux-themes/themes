@@ -11,7 +11,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func ThemeCustom() *huh.Theme {
+var formTheme *huh.Theme
+
+func ThemeCustom() {
 	t := copyBaseTheme(huh.ThemeBase())
 
 	var (
@@ -47,7 +49,7 @@ func ThemeCustom() *huh.Theme {
 
 	t.Blurred = f.Copy()
 
-	return &t
+	formTheme = &t
 }
 
 // What I've implemented is a direct duplicate of huh theme.copy()
@@ -198,7 +200,7 @@ var removeIconsCmd = &cobra.Command{
 						huh.NewOption("Remove", 1),
 					).Value(&form_results),
 			),
-		).WithTheme(ThemeCustom())
+		).WithTheme(formTheme)
 
 		err = form.Run()
 		if err != nil {
@@ -268,7 +270,7 @@ var removeThemesCmd = &cobra.Command{
 					).
 					Value(&form_results),
 			),
-		).WithTheme(ThemeCustom())
+		).WithTheme(formTheme)
 
 		err = form.Run()
 		if err != nil {
