@@ -91,7 +91,7 @@ var removeIconsCmd = &cobra.Command{
 						huh.NewOption("Remove", 1),
 					).Value(&form_results),
 			),
-		).WithTheme(formTheme)
+		).WithTheme(ThemeCustom())
 
 		err = form.Run()
 		if err != nil {
@@ -161,7 +161,7 @@ var removeThemesCmd = &cobra.Command{
 					).
 					Value(&form_results),
 			),
-		).WithTheme(formTheme)
+		).WithTheme(ThemeCustom())
 
 		err = form.Run()
 		if err != nil {

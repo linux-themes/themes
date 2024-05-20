@@ -6,32 +6,32 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var formTheme *huh.Theme
+// var formTheme *huh.Theme
 
-func ThemeCustom() {
-	t := copyBaseTheme(huh.ThemeBase())
+func ThemeCustom() *huh.Theme {
+	t := copyBaseTheme(huh.ThemeBase16())
 
 	var (
 		normalFg = lipgloss.AdaptiveColor{Light: "235", Dark: "252"}
-		indigo   = lipgloss.AdaptiveColor{Light: "#5A56E0", Dark: "#7571F9"}
-		cream    = lipgloss.AdaptiveColor{Light: "#FFFDF5", Dark: "#FFFDF5"}
-		fuchsia  = lipgloss.Color("#F780E2")
-		green    = lipgloss.AdaptiveColor{Light: "#02BA84", Dark: "#02BF87"}
-		red      = lipgloss.AdaptiveColor{Light: "#FF4672", Dark: "#ED567A"}
+		// indigo   = lipgloss.AdaptiveColor{Light: "#5A56E0", Dark: "#7571F9"}
+		cream   = lipgloss.AdaptiveColor{Light: "#FFFDF5", Dark: "#FFFDF5"}
+		green   = lipgloss.AdaptiveColor{Light: "#02BA84", Dark: "#02BF87"}
+		red     = lipgloss.AdaptiveColor{Light: "#FF4672", Dark: "#ED567A"}
+		fuchsia = lipgloss.Color("#F780E2")
+		yellow  = lipgloss.ANSIColor(11)
 	)
 
 	f := &t.Focused
-	f.Base = lipgloss.NewStyle().
-		PaddingLeft(1)
+	f.Base = lipgloss.NewStyle().PaddingLeft(1)
 	f.Title.Foreground(green).Bold(true)
-	f.NoteTitle.Foreground(indigo).Bold(true).MarginBottom(1)
+	f.NoteTitle.Foreground(green).Bold(true).MarginBottom(1)
 	f.Description.Foreground(lipgloss.AdaptiveColor{Light: "", Dark: "243"})
 	f.ErrorIndicator.Foreground(red)
 	f.ErrorMessage.Foreground(red)
 	f.SelectSelector.Foreground(red)
 	f.Option.Foreground(normalFg)
 	f.MultiSelectSelector.Foreground(red)
-	f.SelectedOption.Foreground(lipgloss.ANSIColor(11))
+	f.SelectedOption.Foreground(yellow)
 	f.SelectedPrefix = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "#02CF92", Dark: "#02A877"}).SetString("✓ ")
 	f.UnselectedPrefix = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "", Dark: "243"}).SetString("• ")
 	f.UnselectedOption.Foreground(normalFg)
@@ -42,9 +42,13 @@ func ThemeCustom() {
 	f.TextInput.Placeholder.Foreground(lipgloss.AdaptiveColor{Light: "248", Dark: "238"})
 	f.TextInput.Prompt.Foreground(fuchsia)
 
-	// t.Blurred = f.Copy() // throws
+	b := &t.Blurred
+	b.Description.Italic(true)
+	b.TextInput.Placeholder.Italic(true)
+	b.SelectedOption.Foreground(lipgloss.NewStyle().GetForeground())
+	b.SelectSelector.Foreground(lipgloss.NewStyle().GetForeground())
 
-	formTheme = &t
+	return &t
 }
 
 func copyBaseTheme(original *huh.Theme) huh.Theme {
