@@ -200,10 +200,6 @@ func install_themes_url() {
 	}
 }
 
-func install_invalid() {
-
-}
-
 func Test_Install_Command(t *testing.T) {
 	tests := []struct {
 		name string
@@ -211,7 +207,6 @@ func Test_Install_Command(t *testing.T) {
 	}{
 		{"themes install icons url", install_icons_url},
 		{"themes install themes url", install_themes_url},
-		{"themes install invalid invalid invalid valid", install_invalid},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

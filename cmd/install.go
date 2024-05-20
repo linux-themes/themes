@@ -7,14 +7,11 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
-
-const TEST_URL = "https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz"
 
 func IsValidUrl(url string) bool {
 	if strings.Contains(url, "https://") &&
@@ -76,24 +73,12 @@ var installIconsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		valid_links := []string{}
-
-		for _, packg := range args {
-			if offical_package, err := strconv.Atoi(packg); err == nil {
-				fmt.Printf("%q looks like a number.\n", packg)
-				if offical_package == 1 {
-					// valid_links = append(valid_links, packages_offical_icons[1].link)
-				}
-
-				if offical_package == 2 {
-					// valid_links = append(valid_links, packages_offical_themes[1].link)
-				}
+		for _, link := range args {
+			if IsValidUrl(link) {
+				valid_links = append(valid_links, link)
+				fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
 			} else {
-				if IsValidUrl(packg) {
-					valid_links = append(valid_links, packg)
-					fmt.Println(GREEN + "Valid packg:\t" + CYAN + packg + RESET)
-				} else {
-					fmt.Println(RED + "Invalid packg:\t" + YELLOW + packg + RESET)
-				}
+				fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
 			}
 		}
 
@@ -130,17 +115,14 @@ var installThemesCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		is_valid := true
-		for _, link := range args { // add community repo source
+		valid_links := []string{}
+		for _, link := range args {
 			if IsValidUrl(link) {
+				valid_links = append(valid_links, link)
 				fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
 			} else {
-				is_valid = false
 				fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
 			}
-		}
-		if !is_valid {
-			os.Exit(1)
 		}
 
 		home_path, err := os.UserHomeDir()
@@ -156,7 +138,7 @@ var installThemesCmd = &cobra.Command{
 			}
 		}
 
-		for _, link := range args {
+		for _, link := range valid_links {
 			last_index := strings.LastIndex(link, "/")
 			file_name := link[last_index+1:]
 			fmt.Println(GREEN + "Installing:\t" + RESET + CYAN + install_path + "/" + file_name + RESET)
