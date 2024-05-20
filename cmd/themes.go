@@ -6,6 +6,111 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// Theme is a collection of styles for components of the form.
+// Themes can be applied to a form using the WithTheme option.
+type Theme struct {
+	Form           lipgloss.Style
+	Group          lipgloss.Style
+	FieldSeparator lipgloss.Style
+	Blurred        FieldStyles
+	Focused        FieldStyles
+	Help           help.Styles
+}
+
+// copy returns a copy of a theme with all children styles copied.
+func (t Theme) Copy() Theme {
+	return Theme{
+		Form:           t.Form.Copy(),
+		Group:          t.Group.Copy(),
+		FieldSeparator: t.FieldSeparator.Copy(),
+		Blurred:        t.Blurred.Copy(),
+		Focused:        t.Focused.Copy(),
+		Help: help.Styles{
+			Ellipsis:       t.Help.Ellipsis.Copy(),
+			ShortKey:       t.Help.ShortKey.Copy(),
+			ShortDesc:      t.Help.ShortDesc.Copy(),
+			ShortSeparator: t.Help.ShortSeparator.Copy(),
+			FullKey:        t.Help.FullKey.Copy(),
+			FullDesc:       t.Help.FullDesc.Copy(),
+			FullSeparator:  t.Help.FullSeparator.Copy(),
+		},
+	}
+}
+
+// FieldStyles are the styles for input fields.
+type FieldStyles struct {
+	Base           lipgloss.Style
+	Title          lipgloss.Style
+	Description    lipgloss.Style
+	ErrorIndicator lipgloss.Style
+	ErrorMessage   lipgloss.Style
+
+	// Select styles.
+	SelectSelector lipgloss.Style // Selection indicator
+	Option         lipgloss.Style // Select options
+
+	// Multi-select styles.
+	MultiSelectSelector lipgloss.Style
+	SelectedOption      lipgloss.Style
+	SelectedPrefix      lipgloss.Style
+	UnselectedOption    lipgloss.Style
+	UnselectedPrefix    lipgloss.Style
+
+	// Textinput and teatarea styles.
+	TextInput TextInputStyles
+
+	// Confirm styles.
+	FocusedButton lipgloss.Style
+	BlurredButton lipgloss.Style
+
+	// Card styles.
+	Card      lipgloss.Style
+	NoteTitle lipgloss.Style
+	Next      lipgloss.Style
+}
+
+// TextInputStyles are the styles for text inputs.
+type TextInputStyles struct {
+	Cursor      lipgloss.Style
+	Placeholder lipgloss.Style
+	Prompt      lipgloss.Style
+	Text        lipgloss.Style
+}
+
+// copy returns a copy of a TextInputStyles with all children styles copied.
+func (t TextInputStyles) Copy() TextInputStyles {
+	return TextInputStyles{
+		Cursor:      t.Cursor.Copy(),
+		Placeholder: t.Placeholder.Copy(),
+		Prompt:      t.Prompt.Copy(),
+		Text:        t.Text.Copy(),
+	}
+}
+
+// copy returns a copy of a FieldStyles with all children styles copied.
+func (f FieldStyles) Copy() FieldStyles {
+	return FieldStyles{
+		Base:                f.Base.Copy(),
+		Title:               f.Title.Copy(),
+		Description:         f.Description.Copy(),
+		ErrorIndicator:      f.ErrorIndicator.Copy(),
+		ErrorMessage:        f.ErrorMessage.Copy(),
+		SelectSelector:      f.SelectSelector.Copy(),
+		Option:              f.Option.Copy(),
+		MultiSelectSelector: f.MultiSelectSelector.Copy(),
+		SelectedOption:      f.SelectedOption.Copy(),
+		SelectedPrefix:      f.SelectedPrefix.Copy(),
+		UnselectedOption:    f.UnselectedOption.Copy(),
+		UnselectedPrefix:    f.UnselectedPrefix.Copy(),
+		FocusedButton:       f.FocusedButton.Copy(),
+		BlurredButton:       f.BlurredButton.Copy(),
+		TextInput:           f.TextInput.Copy(),
+		Card:                f.Card.Copy(),
+		NoteTitle:           f.NoteTitle.Copy(),
+		Next:                f.Next.Copy(),
+	}
+}
+
 // make copy public
 
 func ThemeBase() *huh.Theme {
