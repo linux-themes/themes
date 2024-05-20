@@ -8,6 +8,27 @@ import (
 
 type TestFunction func()
 
+func install_build()      {}
+func install_local()      {}
+func install_repository() {}
+
+func Test_Install(t *testing.T) {
+	tests := []struct {
+		name string
+		Test TestFunction
+	}{
+		{"Test: build", install_build},
+		{"Test: install source", install_local},
+		{"Test: install repository", install_repository},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			main()
+			test.Test()
+		})
+	}
+}
+
 func test_remove_all() {
 	home_path, err := os.UserHomeDir()
 	if err != nil {
@@ -15,12 +36,12 @@ func test_remove_all() {
 	}
 
 	_, err = os.Stat(home_path + "/.icons")
-	if err != nil {
+	if err == nil {
 		log.Fatal(err)
 	}
 
 	_, err = os.Stat(home_path + "/.themes")
-	if err != nil {
+	if err == nil {
 		log.Fatal(err)
 	}
 }
@@ -32,7 +53,7 @@ func test_remove_icons() {
 	}
 
 	_, err = os.Stat(home_path + "/.icons")
-	if err != nil {
+	if err == nil {
 		log.Fatal(err)
 	}
 }
@@ -44,7 +65,7 @@ func test_remove_themes() {
 	}
 
 	_, err = os.Stat(home_path + "/.themes")
-	if err != nil {
+	if err == nil {
 		log.Fatal(err)
 	}
 }
@@ -117,7 +138,7 @@ func install_icons_official()  {}
 func install_themes_official() {}
 func install_invalid()         {}
 
-func Test_Install(t *testing.T) {
+func Test_Install_Command(t *testing.T) {
 	tests := []struct {
 		name string
 		Test TestFunction
