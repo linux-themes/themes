@@ -4,6 +4,8 @@
 
 ![testing](https://github.com/linux-themes/themes/actions/workflows/tests.yml/badge.svg)
 
+[![Build Status](https://app.travis-ci.com/Sulstice/global-chem.svg?branch=master)](https://app.travis-ci.com/Sulstice/global-chem)
+
 Manage your linux desktop themes
 
 ## Table of Contents
