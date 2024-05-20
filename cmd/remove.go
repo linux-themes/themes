@@ -47,7 +47,7 @@ func ThemeCustom() {
 	f.TextInput.Placeholder.Foreground(lipgloss.AdaptiveColor{Light: "248", Dark: "238"})
 	f.TextInput.Prompt.Foreground(fuchsia)
 
-	t.Blurred = f.Copy()
+	// t.Blurred = f.Copy()
 
 	formTheme = &t
 }
