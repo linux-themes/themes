@@ -112,15 +112,6 @@ func Test_List(t *testing.T) {
 	}
 }
 
-func install_all() { // test for fail
-	str := strings.Split("./bin/themes.exe install", " ")
-	command := exec.Command(str[0], str[1:]...)
-	err := command.Run()
-	if err == nil {
-		log.Fatalf("command.Run() failed(in this case succeeded)")
-	}
-}
-
 func install_icons_url() {
 	name := "./bin/themes.exe"
 	str := []string{
