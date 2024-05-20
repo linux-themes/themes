@@ -1,7 +1,6 @@
 # Themes
 
 ![Build Status](https://github.com/linux-themes/themes/actions/workflows/tests.yml/badge.svg)
-![Repo Size](https://github.com/linux-themes/themes)
 ![Repo Size](https://img.shields.io/github/repo-size/linux-themes/themes)
 
 Manage your linux desktop themes
