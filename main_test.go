@@ -171,7 +171,7 @@ func install_icons_url() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	if _, err = os.Stat(home_path + "/.icons/mint"); err != nil { //fix
+	if _, err = os.Stat(home_path + "/.icons/mint"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
