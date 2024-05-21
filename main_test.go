@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -46,7 +47,7 @@ func install_local() {
 }
 
 func install_repository() {
-	str := strings.Split("go install -x github.com/linux-themes/themes", " ")
+	str := strings.Split("go install -x github.com/linux-themes/themes@latest", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
 	if err != nil {
@@ -291,12 +292,47 @@ func Test_Remove_Command(t *testing.T) {
 	}
 }
 
+func clean_bin() {
+	str := strings.Split("rm -rf bin", " ")
+	command := exec.Command(str[0], str[1:]...)
+	output, err := command.Output()
+	fmt.Printf("%s\n", output)
+	if err != nil {
+		log.Fatalf("command.Output() failed: %v\n", err.Error())
+	}
+
+	_, err = os.Stat("bin")
+	if err == nil {
+		log.Fatal(err)
+	}
+}
+func clean_go_bin() {
+	home_path, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	str := strings.Split("rm "+home_path+"/go/bin/themes", " ")
+	command := exec.Command(str[0], str[1:]...)
+	output, err := command.Output()
+	fmt.Printf("%s\n", output)
+	if err != nil {
+		log.Fatalf("command.Output() failed: %v\n", err.Error())
+	}
+
+	_, err = os.Stat(home_path + "/go/bin/themes")
+	if err == nil {
+		log.Fatal(err)
+	}
+}
+
 func Test_Clean(t *testing.T) {
 	tests := []struct {
 		name string
 		Test func()
 	}{
-		{"clean", list_all},
+		{"clean bin", clean_bin},
+		{"clean go bin", clean_go_bin},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
