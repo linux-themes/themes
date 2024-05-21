@@ -56,7 +56,7 @@ func DownloadFile(filepath string, url string) {
 	fmt.Println()
 }
 
-func Extract_Tar(filepath string, directory string) error { // add progress bar
+func Extract_Tar(filepath string, directory string) error {
 	cmd := exec.Command("tar", "-xf", filepath, "-C", directory)
 	_, err := cmd.Output()
 	if err != nil {
@@ -91,6 +91,12 @@ var installIconsCmd = &cobra.Command{
 
 		if _, err := os.Stat(install_path); os.IsNotExist(err) {
 			if err := os.Mkdir(install_path, os.ModePerm); err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		if _, err := os.Stat(download_path); os.IsNotExist(err) {
+			if err := os.Mkdir(download_path, os.ModePerm); err != nil {
 				log.Fatal(err)
 			}
 		}
