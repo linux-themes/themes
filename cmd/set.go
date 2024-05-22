@@ -21,6 +21,10 @@ func getDesktopEnvirnoment() string {
 	return os.Environ()[0]
 }
 
+func isValidEnvirnoment(str string) bool {
+	return str == "gnome"
+}
+
 var setCmd = &cobra.Command{
 	Use:   "set",
 	Short: "Set selected theme",
@@ -29,6 +33,10 @@ var setCmd = &cobra.Command{
 
 		desktop_env := getDesktopEnvirnoment()
 		fmt.Println(desktop_env)
+
+		if !isValidEnvirnoment(desktop_env) {
+			log.Fatal("desktop envirnoment not supported")
+		}
 
 		home_path, err := os.UserHomeDir()
 		if err != nil {
@@ -94,7 +102,7 @@ var setCmd = &cobra.Command{
 		}
 
 		if form_results_cancel == 1 {
-
+			fmt.Println("themes set")
 		} else {
 			fmt.Println("Command Canceled")
 		}
