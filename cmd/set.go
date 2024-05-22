@@ -9,6 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// gnome
+// kde
+// cinnamon
+// mate
+
 func getDesktopEnvirnoment() string {
 	for _, value := range os.Environ() {
 		fmt.Println(value)
