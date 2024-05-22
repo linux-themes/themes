@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  Test:
+  Themes:
     runs-on: ubuntu-latest
 
     steps:
