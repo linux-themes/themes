@@ -3,11 +3,18 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"strconv"
+	"os"
 
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
+
+func getDesktopEnvirnoment() string {
+	for _, value := range os.Environ() {
+		fmt.Println(value)
+	}
+	return os.Environ()[0]
+}
 
 var setCmd = &cobra.Command{
 	Use:   "set",
@@ -15,71 +22,74 @@ var setCmd = &cobra.Command{
 	Long:  `Set selected theme`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// home_path, err := os.UserHomeDir()
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
+		desktop_env := getDesktopEnvirnoment()
+		fmt.Println(desktop_env)
 
-		icons := []huh.Option[string]{}
-		for index := 0; index < 10; index++ {
-			option := huh.Option[string]{}
-			option.Key = "package " + strconv.Itoa(index)
-			option.Selected(false)
-			icons = append(icons, option)
-		}
-
-		themes := []huh.Option[string]{}
-		for index := 0; index < 10; index++ {
-			option := huh.Option[string]{}
-			option.Key = "package " + strconv.Itoa(index)
-			option.Selected(false)
-			themes = append(themes, option)
-		}
-
-		form := huh.NewForm(
-			huh.NewGroup(
-				huh.NewSelect[string]().
-					Title("\nIcons").
-					Options(icons...),
-
-				huh.NewSelect[string]().
-					Title("\nThemes").
-					Options(themes...),
-
-				huh.NewSelect[int]().
-					Title("\nConfirm").
-					Options(
-						huh.NewOption("Cancel", 0),
-						huh.NewOption("Remove", 1),
-					),
-			),
-		).WithTheme(ThemeCustom())
-
-		err := form.Run()
+		home_path, err := os.UserHomeDir()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		cancel_option := true
-		if !cancel_option {
-			for _, option := range icons {
+		entries, err := os.ReadDir(home_path + "/.icons")
+		if err != nil {
+			log.Fatal(err)
+		}
 
-				fmt.Println(option.String())
+		icons := []huh.Option[string]{}
+		for _, entry := range entries {
+			option := huh.Option[string]{}
+			option.Key = entry.Name()
+			option.Value = entry.Name()
+			option.Selected(false)
+			icons = append(icons, option)
+		}
 
-				if option.Value == "true" {
-					fmt.Println(RED + "hit" + RESET)
-				}
-			}
+		entries, err = os.ReadDir(home_path + "/.themes")
+		if err != nil {
+			log.Fatal(err)
+		}
 
-			for _, option := range themes {
+		themes := []huh.Option[string]{}
+		for _, entry := range entries {
+			option := huh.Option[string]{}
+			option.Key = entry.Name()
+			option.Value = entry.Name()
+			option.Selected(false)
+			themes = append(themes, option)
+		}
 
-				fmt.Println(option.String())
+		var form_results_icons string
+		var form_results_themes string
+		var form_results_cancel int
+		form := huh.NewForm(
+			huh.NewGroup(
+				huh.NewSelect[string]().
+					Title("\nIcons").
+					Options(icons...).
+					Value(&form_results_icons),
 
-				if option.Value == "true" {
-					fmt.Println(RED + "hit" + RESET)
-					break
-				}
-			}
+				huh.NewSelect[string]().
+					Title("\nThemes").
+					Options(themes...).
+					Value(&form_results_themes),
+
+				huh.NewSelect[int]().
+					Title("\nConfirm").
+					Options(
+						huh.NewOption("Cancel", 0).Selected(true),
+						huh.NewOption("Remove", 1),
+					).
+					Value(&form_results_cancel),
+			),
+		).WithTheme(ThemeCustom())
+
+		err = form.Run()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if form_results_cancel == 1 {
+
 		} else {
 			fmt.Println("Command Canceled")
 		}
