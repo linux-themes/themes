@@ -12,6 +12,8 @@ Manage your linux desktop themes
 
 ## Install
 
+Install golang from apt or from https://go.dev/doc/install
+
 ```sh
 sudo apt install nala
 sudo nala install golang
