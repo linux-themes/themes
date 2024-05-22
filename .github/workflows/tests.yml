@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           go install github.com/rakyll/gotest@latest 
-          go install github.com/goreleaser/goreleaser
+          go install github.com/goreleaser/goreleaser@latest
 
       - name: Build
         run: go build -v ./...
