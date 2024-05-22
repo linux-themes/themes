@@ -10,13 +10,6 @@
 
 Manage your linux desktop themes
 
-## Table of Contents
-
-- [Install](#install)
-- [Use](#use)
-- [Contributing](#contributing)
-
-
 ## Install
 
 ```sh
