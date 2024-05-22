@@ -20,6 +20,11 @@ Manage your linux desktop themes
 ## Install
 
 ```sh
+sudo apt install nala
+sudo nala install golang
+```
+
+```sh
 go install github.com/linux-themes/themes@latest
 ```
 
@@ -34,6 +39,11 @@ themes remove
 ## Contributing
 
 Feel free to dive in! [Open an issue](https://github.com/RichardLitt/standard-readme/issues/new) or submit PRs.
+
+```sh
+git clone https://github.com/linux-themes/themes  
+```
+
 
 ### Contributors
 
