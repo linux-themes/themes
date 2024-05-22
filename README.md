@@ -13,7 +13,9 @@ Manage your linux desktop themes
 ## Install
 
 Install go from https://go.dev/doc/install
+
 Or
+
 Install go from apt
 
 ```sh
