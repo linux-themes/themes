@@ -7,11 +7,25 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
+
+var offical_repository = map[int]string{
+	1:  "https://github.com/linux-themes/themes-official/blob/main/icons/Infinity.tar.gz",
+	2:  "https://github.com/linux-themes/themes-official/blob/main/icons/Obsidian.tar.xz",
+	3:  "https://github.com/linux-themes/themes-official/blob/main/icons/We10X.tar.xz",
+	4:  "https://github.com/linux-themes/themes-official/blob/main/icons/WhiteSur.tar.xz",
+	5:  "https://github.com/linux-themes/themes-official/blob/main/icons/Win10Sur.tar.xz",
+	6:  "https://github.com/linux-themes/themes-official/blob/main/icons/Win11.tar.xz",
+	7:  "https://github.com/linux-themes/themes-official/blob/main/icons/mint.tar.xz",
+	8:  "https://github.com/linux-themes/themes-official/blob/main/themes/gnome/MarbleShell.tar.gz",
+	9:  "",
+	10: "",
+}
 
 func IsValidUrl(url string) bool {
 	if strings.Contains(url, "https://") &&
@@ -74,11 +88,21 @@ var installIconsCmd = &cobra.Command{
 
 		valid_links := []string{}
 		for _, link := range args {
-			if IsValidUrl(link) {
-				valid_links = append(valid_links, link)
-				fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
+			if offical_package, err := strconv.Atoi(link); err == nil {
+				if offical_package <= len(offical_repository) {
+					valid_package := offical_repository[offical_package]
+					valid_links = append(valid_links, valid_package)
+					fmt.Println(GREEN + "Valid Package:\t" + CYAN + valid_package + RESET)
+				} else {
+					fmt.Println(RED + "Invalid Package:\t" + YELLOW + link + RESET)
+				}
 			} else {
-				fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
+				if IsValidUrl(link) {
+					valid_links = append(valid_links, link)
+					fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
+				} else {
+					fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
+				}
 			}
 		}
 
@@ -123,11 +147,21 @@ var installThemesCmd = &cobra.Command{
 
 		valid_links := []string{}
 		for _, link := range args {
-			if IsValidUrl(link) {
-				valid_links = append(valid_links, link)
-				fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
+			if offical_package, err := strconv.Atoi(link); err == nil {
+				if offical_package <= len(offical_repository) {
+					valid_package := offical_repository[offical_package]
+					valid_links = append(valid_links, valid_package)
+					fmt.Println(GREEN + "Valid Package:\t" + CYAN + valid_package + RESET)
+				} else {
+					fmt.Println(RED + "Invalid Package:\t" + YELLOW + link + RESET)
+				}
 			} else {
-				fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
+				if IsValidUrl(link) {
+					valid_links = append(valid_links, link)
+					fmt.Println(GREEN + "Valid link:\t" + CYAN + link + RESET)
+				} else {
+					fmt.Println(RED + "Invalid link:\t" + YELLOW + link + RESET)
+				}
 			}
 		}
 
