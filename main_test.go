@@ -182,7 +182,7 @@ func install_themes_url() {
 	str := []string{
 		"install",
 		"themes",
-		"https://github.com/linux-themes/themes-official/raw/main/themes/MarbleShell.tar.gz",
+		"https://github.com/linux-themes/themes-official/raw/main/themes/gnome/MarbleShell.tar.gz",
 	}
 	command := exec.Command(name, str...)
 	err := command.Run()
