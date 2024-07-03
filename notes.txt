@@ -16,5 +16,12 @@ themes install icons https://github.com/linux-themes/themes-official/raw/main/ic
 themes install themes https://github.com/linux-themes/themes-official/raw/main/themes/marble-shell.tar.gz
 
 
+-add set command
+-add revert command
+-add create theme/icon project command
+
+-add website layout
+-add categories
+-add documentation
 
 
