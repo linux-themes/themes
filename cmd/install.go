@@ -15,16 +15,14 @@ import (
 )
 
 var offical_repository = map[int]string{
-	1:  "https://github.com/linux-themes/themes-official/blob/main/icons/Infinity.tar.gz",
-	2:  "https://github.com/linux-themes/themes-official/blob/main/icons/Obsidian.tar.xz",
-	3:  "https://github.com/linux-themes/themes-official/blob/main/icons/We10X.tar.xz",
-	4:  "https://github.com/linux-themes/themes-official/blob/main/icons/WhiteSur.tar.xz",
-	5:  "https://github.com/linux-themes/themes-official/blob/main/icons/Win10Sur.tar.xz",
-	6:  "https://github.com/linux-themes/themes-official/blob/main/icons/Win11.tar.xz",
-	7:  "https://github.com/linux-themes/themes-official/blob/main/icons/mint.tar.xz",
-	8:  "https://github.com/linux-themes/themes-official/blob/main/themes/gnome/MarbleShell.tar.gz",
-	9:  "",
-	10: "",
+	1: "https://github.com/linux-themes/themes-official/raw/main/icons/Infinity.tar.gz",
+	2: "https://github.com/linux-themes/themes-official/raw/main/icons/Obsidian.tar.xz",
+	3: "https://github.com/linux-themes/themes-official/raw/main/icons/We10X.tar.xz",
+	4: "https://github.com/linux-themes/themes-official/raw/main/icons/WhiteSur.tar.xz",
+	5: "https://github.com/linux-themes/themes-official/raw/main/icons/Win10Sur.tar.xz",
+	6: "https://github.com/linux-themes/themes-official/raw/main/icons/Win11.tar.xz",
+	7: "https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
+	8: "https://github.com/linux-themes/themes-official/raw/main/themes/gnome/MarbleShell.tar.gz",
 }
 
 func IsValidUrl(url string) bool {
@@ -191,10 +189,11 @@ var installThemesCmd = &cobra.Command{
 }
 
 var installCmd = &cobra.Command{
-	Use:   "install",
-	Short: "Install theme",
-	Long:  `Install themes from community repository or url`,
-	Args:  cobra.ExactArgs(1),
+	Use:       "install",
+	Short:     "Install theme",
+	Long:      `Install themes from community repository or url`,
+	ValidArgs: []string{"icons", "themes"},
+	Args:      cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if args[0] == "icons" {
