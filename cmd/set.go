@@ -4,25 +4,22 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
 
+// TODO set themes
+
 // gnome
+// XDG_CURRENT_DESKTOP=GNOME
 // kde
 // cinnamon
 // mate
 
-func getDesktopEnvirnoment() string {
-	for _, value := range os.Environ() {
-		fmt.Println(value)
-	}
-	return os.Environ()[0]
-}
-
 func isValidEnvirnoment(str string) bool {
-	return str == "gnome"
+	return str == "GNOME"
 }
 
 var setCmd = &cobra.Command{
@@ -31,8 +28,8 @@ var setCmd = &cobra.Command{
 	Long:  `Set selected theme`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		desktop_env := getDesktopEnvirnoment()
-		fmt.Println(desktop_env)
+		desktop_env := os.Getenv("XDG_CURRENT_DESKTOP")
+		// fmt.Println(desktop_env)
 
 		if !isValidEnvirnoment(desktop_env) {
 			log.Fatal("desktop envirnoment not supported")
@@ -90,7 +87,7 @@ var setCmd = &cobra.Command{
 					Title("\nConfirm").
 					Options(
 						huh.NewOption("Cancel", 0).Selected(true),
-						huh.NewOption("Remove", 1),
+						huh.NewOption("Set", 1),
 					).
 					Value(&form_results_cancel),
 			),
@@ -101,10 +98,26 @@ var setCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		if form_results_cancel == 1 {
-			fmt.Println("themes set")
-		} else {
+		if form_results_cancel == 0 {
 			fmt.Println("Command Canceled")
+		} else {
+			// gsettings set org.gnome.desktop.interface icon-theme 'MyIconTheme'
+			arg0 := "gsettings"
+			arg1 := "set"
+			arg2 := "org.gnome.desktop.interface"
+			arg3 := "icon-theme"
+
+			cmd := exec.Command(arg0, arg1, arg2, arg3, form_results_icons)
+			stdout, err := cmd.Output()
+
+			if err != nil {
+				fmt.Println(err.Error())
+				return
+			}
+
+			// Print the output
+			fmt.Println(string(stdout))
+			fmt.Println("Icons set: " + string(form_results_icons))
 		}
 
 	},
