@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var offical_repository = map[int]string{
+var offical_icons = map[int]string{
 	1: "https://github.com/linux-themes/themes-official/raw/main/icons/Infinity.tar.gz",
 	2: "https://github.com/linux-themes/themes-official/raw/main/icons/Obsidian.tar.xz",
 	3: "https://github.com/linux-themes/themes-official/raw/main/icons/We10X.tar.xz",
@@ -22,7 +22,9 @@ var offical_repository = map[int]string{
 	5: "https://github.com/linux-themes/themes-official/raw/main/icons/Win10Sur.tar.xz",
 	6: "https://github.com/linux-themes/themes-official/raw/main/icons/Win11.tar.xz",
 	7: "https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
-	8: "https://github.com/linux-themes/themes-official/raw/main/themes/gnome/MarbleShell.tar.gz",
+}
+var offical_themes = map[int]string{
+	1: "https://github.com/linux-themes/themes-official/raw/main/themes/gnome/MarbleShell.tar.gz",
 }
 
 func IsValidUrl(url string) bool {
@@ -87,8 +89,8 @@ var installIconsCmd = &cobra.Command{
 		valid_links := []string{}
 		for _, link := range args {
 			if offical_package, err := strconv.Atoi(link); err == nil {
-				if offical_package <= len(offical_repository) {
-					valid_package := offical_repository[offical_package]
+				if offical_package <= len(offical_icons) {
+					valid_package := offical_icons[offical_package]
 					valid_links = append(valid_links, valid_package)
 					fmt.Println(GREEN + "Valid Package:\t" + CYAN + valid_package + RESET)
 				} else {
@@ -146,8 +148,8 @@ var installThemesCmd = &cobra.Command{
 		valid_links := []string{}
 		for _, link := range args {
 			if offical_package, err := strconv.Atoi(link); err == nil {
-				if offical_package <= len(offical_repository) {
-					valid_package := offical_repository[offical_package]
+				if offical_package <= len(offical_themes) {
+					valid_package := offical_themes[offical_package]
 					valid_links = append(valid_links, valid_package)
 					fmt.Println(GREEN + "Valid Package:\t" + CYAN + valid_package + RESET)
 				} else {
