@@ -116,7 +116,7 @@ var listCmd = &cobra.Command{
 	Long:  `List all installed themes and icons`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		listOfficalCmd.Run(cmd, args)
+		// listOfficalCmd.Run(cmd, args)
 		listIconsCmd.Run(cmd, args)
 		listThemesCmd.Run(cmd, args)
 		fmt.Println()
