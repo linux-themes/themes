@@ -19,7 +19,16 @@ import (
 // mate
 
 func isValidEnvirnoment(str string) bool {
-	return str == "GNOME"
+	switch str {
+	case "GNOME":
+		return true
+	case "KDE":
+		return true
+	case "Cinnamon":
+		return true
+	default:
+		return false
+	}
 }
 
 var setCmd = &cobra.Command{
@@ -32,7 +41,7 @@ var setCmd = &cobra.Command{
 		// fmt.Println(desktop_env)
 
 		if !isValidEnvirnoment(desktop_env) {
-			log.Fatal("desktop envirnoment not supported")
+			log.Fatal(RED + "Desktop envirnoment not supported." + RESET + YELLOW + " Contribute to https://github.com/linux-themes/themes" + RESET)
 		}
 
 		home_path, err := os.UserHomeDir()
@@ -86,8 +95,8 @@ var setCmd = &cobra.Command{
 				huh.NewSelect[int]().
 					Title("\nConfirm").
 					Options(
-						huh.NewOption("Cancel", 0).Selected(true),
-						huh.NewOption("Set", 1),
+						huh.NewOption("Set", 0),
+						huh.NewOption("Cancel", 1).Selected(true),
 					).
 					Value(&form_results_cancel),
 			),
@@ -98,29 +107,27 @@ var setCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		if form_results_cancel == 0 {
+		if form_results_cancel == 1 {
 			fmt.Println("Command Canceled")
 		} else {
-			// gsettings set org.gnome.desktop.interface icon-theme 'MyIconTheme'
-			arg0 := "gsettings"
-			arg1 := "set"
-			arg2 := "org.gnome.desktop.interface"
-			arg3 := "icon-theme"
+			// gsettings set org.gnome.desktop.interface icon-theme 'mint'
+			// dconf write /org/gnome/shell/extensions/user-theme/name "'Marble-purple-dark'"
+			runCommand("gsettings", "set", "org.gnome.desktop.interface", "icon-theme", form_results_icons)
+			runCommand("dconf", "write", "/org/gnome/shell/extensions/user-theme/name", "'"+form_results_themes+"'")
 
-			cmd := exec.Command(arg0, arg1, arg2, arg3, form_results_icons)
-			stdout, err := cmd.Output()
-
-			if err != nil {
-				fmt.Println(err.Error())
-				return
-			}
-
-			// Print the output
-			fmt.Println(string(stdout))
-			fmt.Println("Icons set: " + string(form_results_icons))
+			fmt.Println(YELLOW + "Icons set: " + RESET + GREEN + string(form_results_icons) + RESET)
+			fmt.Println(YELLOW + "Themes set: " + RESET + GREEN + string(form_results_themes) + RESET)
 		}
-
 	},
+}
+
+func runCommand(name string, arg ...string) {
+	cmd := exec.Command(name, arg...)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("Error: %s\n", err.Error())
+		return
+	}
 }
 
 func init() {
