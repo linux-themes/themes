@@ -1,5 +1,5 @@
-Create community tasks
-Set command: check empty .folders, enable .themes folder command
-List command: list offical themes
-README: add go/bin to PATH 
-Set up releases
+- Set command: check empty .folders, enable .themes folder command
+- List command: list offical themes
+- Set up releases
+- create CONTRIBUTING.md
+
