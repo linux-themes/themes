@@ -12,6 +12,10 @@ Manage your linux desktop themes
 
 ## Install
 
+```sh
+go install github.com/linux-themes/themes@latest
+```
+
 Install go from https://go.dev/doc/install
 
 Or
@@ -23,8 +27,17 @@ sudo apt install nala -y
 sudo nala install golang -y
 ```
 
+Check go bin is on path
 ```sh
-go install github.com/linux-themes/themes@latest
+echo $PATH | tr ':' '\n' | grep 'go/bin'
+```
+
+If not add to .bashrc 
+```sh
+echo -n 'export PATH="~/go/bin:$PATH"' >> ~/.bashrc
+```
+```sh
+source ~/.bashrc
 ```
 
 ## Use
