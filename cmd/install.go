@@ -195,7 +195,7 @@ var installCmd = &cobra.Command{
 	Short:     "Install theme",
 	Long:      `Install themes from community repository or url`,
 	ValidArgs: []string{"icons", "themes"},
-	Args:      cobra.OnlyValidArgs,
+	Args:      cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if args[0] == "icons" {
