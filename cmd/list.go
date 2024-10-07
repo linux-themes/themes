@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -95,18 +97,37 @@ var listOfficalCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		fmt.Println(GREEN + "Official Icons:" + RESET)
-		// for _, v := range packages_offical_icons {
-		// fmt.Println(CYAN + "\t" + v.name + RESET)
-		// fmt.Println(v)
-		// }
 
+		keys := make([]int, 0)
+		for k := range offical_icons {
+			keys = append(keys, k)
+		}
+		sort.Ints(keys)
+		for _, k := range keys {
+			v := offical_icons[k]
+			index := strings.LastIndex(v, "/")
+			v = v[index+1:]
+			index = strings.Index(v, ".")
+			v = v[:index]
+			fmt.Printf(CYAN+"\t%d\t%s\n"+RESET, k, v)
+		}
 		fmt.Println()
 
+		keys = make([]int, 0)
+		for k := range offical_themes {
+			keys = append(keys, k)
+		}
+		sort.Ints(keys)
+
 		fmt.Println(GREEN + "Official Themes:" + RESET)
-		// for _, v := range packages_offical_themes {
-		// fmt.Println(CYAN + "\t" + v.name + RESET)
-		// fmt.Println(v)
-		// }
+		for _, k := range keys {
+			v := offical_icons[k]
+			index := strings.LastIndex(v, "/")
+			v = v[index+1:]
+			index = strings.Index(v, ".")
+			v = v[:index]
+			fmt.Printf(CYAN+"\t%d\t%s\n"+RESET, k, v)
+		}
 	},
 }
 
