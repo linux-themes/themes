@@ -160,7 +160,7 @@ func install_icons_url() {
 	str := []string{
 		"install",
 		"icons",
-		"https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz",
+		"https://github.com/linux-themes/themes-official/raw/main/icons/Mint.tar.xz",
 	}
 	command := exec.Command(name, str...)
 	err := command.Run()
@@ -172,7 +172,7 @@ func install_icons_url() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	if _, err = os.Stat(home_path + "/.icons/mint"); err != nil {
+	if _, err = os.Stat(home_path + "/.icons/Mint"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
