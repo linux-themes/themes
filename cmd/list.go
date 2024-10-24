@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -35,18 +33,17 @@ var listIconsCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			println(GREEN + "\nIcons" + RESET)
-			for _, e := range entries {
-				fmt.Println(CYAN + "\t" + e.Name() + RESET)
+			print(GREEN + "\nIcons" + RESET)
+			for index, value := range entries {
+				print(YELLOW, "\n\t", index+1, RESET)
+				print("\t", value.Name())
 			}
 
 			if len(entries) == 0 {
 				fmt.Println("\tNo icons installed.")
-				fmt.Println()
 			}
-
-			fmt.Println()
 		}
+		println()
 	},
 }
 
@@ -75,59 +72,46 @@ var listThemesCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			println(GREEN + "\nThemes" + RESET)
-			for _, e := range entries {
-				fmt.Println(CYAN + "\t" + e.Name() + RESET)
+			print(GREEN + "\nThemes" + RESET)
+			for index, value := range entries {
+				print(YELLOW, "\n\t", index+1, RESET)
+				print("\t", value.Name())
 			}
 
 			if len(entries) == 0 {
 				fmt.Println("\tNo themes installed.")
-				fmt.Println()
 			}
-
-			fmt.Println()
 		}
+		println()
 	},
 }
-var listOfficalCmd = &cobra.Command{
-	Use:   "official",
-	Short: "List offical themes",
-	Long:  `List offical themes`,
+
+var listStoreCmd = &cobra.Command{
+	Use:   "store",
+	Short: "List store themes",
+	Long:  `List store themes`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Println(GREEN + "Official Icons:" + RESET)
+		themes := Yaml_get_file_index(".themes")
+		icons := Yaml_get_file_index(".icons")
 
-		keys := make([]int, 0)
-		for k := range offical_icons {
-			keys = append(keys, k)
+		index := 1
+		print(GREEN + "Store Themes" + RESET)
+		for _, value := range themes.List {
+			print(YELLOW, "\n\t", index, RESET)
+			print("\t", value.Name)
+			index++
 		}
-		sort.Ints(keys)
-		for _, k := range keys {
-			v := offical_icons[k]
-			index := strings.LastIndex(v, "/")
-			v = v[index+1:]
-			index = strings.Index(v, ".")
-			v = v[:index]
-			fmt.Printf(CYAN+"\t%d\t%s\n"+RESET, k, v)
-		}
-		fmt.Println()
 
-		keys = make([]int, 0)
-		for k := range offical_themes {
-			keys = append(keys, k)
+		index = 1
+		print(GREEN + "\nStore Icons" + RESET)
+		for _, value := range icons.List {
+			print(YELLOW, "\n\t", index, RESET)
+			print("\t", value.Name)
+			index++
 		}
-		sort.Ints(keys)
-
-		fmt.Println(GREEN + "Official Themes:" + RESET)
-		for _, k := range keys {
-			v := offical_icons[k]
-			index := strings.LastIndex(v, "/")
-			v = v[index+1:]
-			index = strings.Index(v, ".")
-			v = v[:index]
-			fmt.Printf(CYAN+"\t%d\t%s\n"+RESET, k, v)
-		}
+		println()
 	},
 }
 
@@ -137,15 +121,15 @@ var listCmd = &cobra.Command{
 	Long:  `List all installed themes and icons`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		// listOfficalCmd.Run(cmd, args)
+		listStoreCmd.Run(cmd, args)
 		listIconsCmd.Run(cmd, args)
 		listThemesCmd.Run(cmd, args)
-		fmt.Println()
+		println()
 	},
 }
 
 func init() {
-	listCmd.AddCommand(listOfficalCmd)
+	listCmd.AddCommand(listStoreCmd)
 	listCmd.AddCommand(listIconsCmd)
 	listCmd.AddCommand(listThemesCmd)
 

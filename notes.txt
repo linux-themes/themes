@@ -2,6 +2,7 @@
 huh
 progress
 cobra
+yaml
 
 cobra-cli
 gotest
