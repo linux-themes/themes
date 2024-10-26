@@ -93,8 +93,8 @@ var listStoreCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		themes := Yaml_get_file_index(".themes")
-		icons := Yaml_get_file_index(".icons")
+		themes := Yaml_get_file(".themes")
+		icons := Yaml_get_file(".icons")
 
 		index := 1
 		print(GREEN + "Store Themes" + RESET)
