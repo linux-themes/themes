@@ -21,7 +21,7 @@ type List struct {
 }
 
 func Yaml_get_file(folder string) List {
-	url := fmt.Sprintf("https://raw.githubusercontent.com/linux-themes/%s/refs/heads/main/data.yml", folder)
+	url := fmt.Sprintf("https://raw.githubusercontent.com/linux-themes/%s/refs/heads/main/index.yml", folder)
 	resp, err := http.Get(url)
 	if err != nil {
 		println(url)

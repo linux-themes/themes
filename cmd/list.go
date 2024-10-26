@@ -97,7 +97,7 @@ var listStoreCmd = &cobra.Command{
 		icons := Yaml_get_file(".icons")
 
 		index := 1
-		print(GREEN + "Store Themes" + RESET)
+		print(CYAN + "Store Themes" + RESET)
 		for _, value := range themes.List {
 			print(YELLOW, "\n\t", index, RESET)
 			print("\t", value.Name)
@@ -105,7 +105,7 @@ var listStoreCmd = &cobra.Command{
 		}
 
 		index = 1
-		print(GREEN + "\nStore Icons" + RESET)
+		print(CYAN + "\nStore Icons" + RESET)
 		for _, value := range icons.List {
 			print(YELLOW, "\n\t", index, RESET)
 			print("\t", value.Name)
