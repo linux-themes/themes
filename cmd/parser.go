@@ -14,6 +14,7 @@ type Data struct {
 	Description string `yaml:"Description"`
 	Category    string `yaml:"Category"`
 	Icon        string `yaml:"Icon"`
+	Url         string `yaml:"Url"`
 }
 
 type List struct {
@@ -63,6 +64,6 @@ func Yaml_print(data Data) {
 }
 
 func Yaml_test() {
-	data := Yaml_get_file(".icons")
+	data := Yaml_get_file(".themes")
 	Yaml_print_list(data)
 }
