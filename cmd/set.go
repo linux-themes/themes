@@ -80,26 +80,39 @@ var setCmd = &cobra.Command{
 		var form_results_icons string
 		var form_results_themes string
 		var form_results_cancel int
+
+		field_icons := huh.NewSelect[string]().
+			Title("\nIcons").
+			Options(icons...).
+			Value(&form_results_icons)
+
+		field_themes :=
+			huh.NewSelect[string]().
+				Title("\nThemes").
+				Options(themes...).
+				Value(&form_results_themes)
+
+		field_select :=
+			huh.NewSelect[int]().
+				Title("\nConfirm").
+				Options(
+					huh.NewOption("Set", 0),
+					huh.NewOption("Cancel", 1).Selected(true),
+				).
+				Value(&form_results_cancel)
+
+		fields := []huh.Field{field_icons, field_themes, field_select}
+
+		if len(icons) < 1 {
+			fields = []huh.Field{field_themes, field_select}
+		}
+
+		if len(themes) < 1 {
+			fields = []huh.Field{field_icons, field_select}
+		}
+
 		form := huh.NewForm(
-			huh.NewGroup(
-				huh.NewSelect[string]().
-					Title("\nIcons").
-					Options(icons...).
-					Value(&form_results_icons),
-
-				huh.NewSelect[string]().
-					Title("\nThemes").
-					Options(themes...).
-					Value(&form_results_themes),
-
-				huh.NewSelect[int]().
-					Title("\nConfirm").
-					Options(
-						huh.NewOption("Set", 0),
-						huh.NewOption("Cancel", 1).Selected(true),
-					).
-					Value(&form_results_cancel),
-			),
+			huh.NewGroup(fields...),
 		).WithTheme(ThemeCustom())
 
 		err = form.Run()
@@ -112,11 +125,18 @@ var setCmd = &cobra.Command{
 		} else {
 			// gsettings set org.gnome.desktop.interface icon-theme 'mint'
 			// dconf write /org/gnome/shell/extensions/user-theme/name "'Marble-purple-dark'"
+			runCommand("gnome-extensions", "enable", "user-theme@gnome-shell-extensions.gcampax.github.com") // needs a variable check
+
 			runCommand("gsettings", "set", "org.gnome.desktop.interface", "icon-theme", form_results_icons)
 			runCommand("dconf", "write", "/org/gnome/shell/extensions/user-theme/name", "'"+form_results_themes+"'")
 
-			fmt.Println(YELLOW + "Icons set: " + RESET + GREEN + string(form_results_icons) + RESET)
-			fmt.Println(YELLOW + "Themes set: " + RESET + GREEN + string(form_results_themes) + RESET)
+			if len(icons) < 1 {
+				fmt.Println(YELLOW + "Icons set: " + RESET + GREEN + string(form_results_icons) + RESET)
+			}
+
+			if len(themes) < 1 {
+				fmt.Println(YELLOW + "Themes set: " + RESET + GREEN + string(form_results_themes) + RESET)
+			}
 		}
 	},
 }
