@@ -21,29 +21,6 @@ type List struct {
 	List map[string]Data `yaml:"Themes"`
 }
 
-func Yaml_get_file(folder string) List {
-	url := fmt.Sprintf("https://raw.githubusercontent.com/linux-themes/%s/refs/heads/main/index.yml", folder)
-	resp, err := http.Get(url)
-	if err != nil {
-		println(url)
-		log.Fatalf(RED+"Failed to fetch the file: %v"+RESET, err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		log.Fatalf(RED+"Failed to fetch the file: %s"+RESET, resp.Status)
-	}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalf(RED+"Failed to read the response body: %v"+RESET, err)
-	}
-	var data List
-	err = yaml.Unmarshal([]byte(body), &data)
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
-	return data
-}
-
 func Yaml_print_list(list List) {
 	for key, theme := range list.List {
 		print(GREEN+"\nTheme: "+RESET, key)
@@ -63,7 +40,31 @@ func Yaml_print(data Data) {
 	print("\n")
 }
 
+func Yaml_get_file(folder string) List {
+	url := fmt.Sprintf("https://raw.githubusercontent.com/linux-themes/database/refs/heads/main/%s/index.yml", folder)
+	resp, err := http.Get(url)
+	if err != nil {
+		println(url)
+		log.Fatalf(RED+"Failed to fetch the file: %v | "+url+RESET, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		println(url)
+		log.Fatalf(RED+"Failed to fetch the file: %s"+RESET, resp.Status)
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf(RED+"Failed to read the response body: %v"+RESET, err)
+	}
+	var data List
+	err = yaml.Unmarshal([]byte(body), &data)
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+	return data
+}
+
 func Yaml_test() {
-	data := Yaml_get_file(".themes")
+	data := Yaml_get_file("themes")
 	Yaml_print_list(data)
 }

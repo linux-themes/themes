@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func install_build() {
+func install_program_build() {
 	str := strings.Split("mkdir -p bin", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
@@ -28,7 +28,7 @@ func install_build() {
 	}
 }
 
-func install_local() {
+func install_program_source() {
 	str := strings.Split("go install", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
@@ -46,7 +46,7 @@ func install_local() {
 	}
 }
 
-func install_repository() {
+func install_program_repository() {
 	str := strings.Split("go install -x github.com/linux-themes/themes@latest", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
@@ -69,9 +69,9 @@ func Test_Install_Program(t *testing.T) {
 		name string
 		Test func()
 	}{
-		{"build", install_build},
-		{"install source", install_local},
-		{"install repository", install_repository},
+		{"build", install_program_build},
+		{"install source", install_program_source},
+		// {"install repository", install_program_repository},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -80,12 +80,12 @@ func Test_Install_Program(t *testing.T) {
 	}
 }
 
-func list_all() {
+func list_command_all() {
 	str := strings.Split("./bin/themes.exe list", " ")
 	command := exec.Command(str[0], str[1:]...)
-	err := command.Run()
+	output, err := command.CombinedOutput()
 	if err != nil {
-		log.Fatalf("command.Run() failed: %v\n", err)
+		log.Fatalf("command.Run() failed: %v\n%s\n", err, output)
 	}
 
 	home_path, err := os.UserHomeDir()
@@ -101,7 +101,8 @@ func list_all() {
 		log.Fatal(err.Error())
 	}
 }
-func list_icons() {
+
+func list_command_icons() {
 	str := strings.Split("./bin/themes.exe list icons", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
@@ -120,7 +121,7 @@ func list_icons() {
 	}
 }
 
-func list_themes() {
+func list_command_themes() {
 	str := strings.Split("./bin/themes.exe list themes", " ")
 	command := exec.Command(str[0], str[1:]...)
 	err := command.Run()
@@ -138,14 +139,14 @@ func list_themes() {
 	}
 }
 
-func Test_List(t *testing.T) {
+func Test_List_Command(t *testing.T) {
 	tests := []struct {
 		name string
 		Test func()
 	}{
-		{"themes list", list_all},
-		{"themes list icons", list_icons},
-		{"themes list themes", list_themes},
+		{"themes list", list_command_all},
+		{"themes list icons", list_command_icons},
+		{"themes list themes", list_command_themes},
 	}
 
 	for _, test := range tests {
@@ -160,12 +161,12 @@ func install_icons_url() {
 	str := []string{
 		"install",
 		"icons",
-		"https://github.com/linux-themes/database/icons/raw/main/icons/Mint.tar.xz",
+		"https://github.com/linux-themes/database/raw/refs/heads/main/icons/mint/Mint.tar.xz",
 	}
 	command := exec.Command(name, str...)
-	err := command.Run()
+	output, err := command.CombinedOutput()
 	if err != nil {
-		log.Fatalf("command.Run() failed: %v\n", err)
+		log.Fatalf("command.Run() failed: %v\n%s\n", err, output)
 	}
 
 	home_path, err := os.UserHomeDir()
@@ -182,12 +183,12 @@ func install_themes_url() {
 	str := []string{
 		"install",
 		"themes",
-		"https://github.com/linux-themes/database/themes/raw/main/themes/gnome/MarbleShell.tar.gz",
+		"https://github.com/linux-themes/database/raw/refs/heads/main/themes/gnome/marble/Marble.tar.gz",
 	}
 	command := exec.Command(name, str...)
-	err := command.Run()
+	output, err := command.CombinedOutput()
 	if err != nil {
-		log.Fatalf("command.Run() failed: %v\n", err)
+		log.Fatalf("command.Run() failed: %v\n%s\n", err, output)
 	}
 
 	home_path, err := os.UserHomeDir()

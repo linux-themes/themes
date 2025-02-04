@@ -86,18 +86,18 @@ var listThemesCmd = &cobra.Command{
 	},
 }
 
-var listStoreCmd = &cobra.Command{
-	Use:   "store",
-	Short: "List store themes",
-	Long:  `List store themes`,
+var listDatabaseCmd = &cobra.Command{
+	Use:   "database",
+	Short: "List database themes",
+	Long:  `List database themes`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		themes := Yaml_get_file(".themes")
-		icons := Yaml_get_file(".icons")
+		themes := Yaml_get_file("themes")
+		icons := Yaml_get_file("icons")
 
 		index := 1
-		print(CYAN + "Store Themes" + RESET)
+		print(CYAN + "Database Themes" + RESET)
 		for _, value := range themes.List {
 			print(YELLOW, "\n\t", index, RESET)
 			print("\t", value.Name)
@@ -105,7 +105,7 @@ var listStoreCmd = &cobra.Command{
 		}
 
 		index = 1
-		print(CYAN + "\nStore Icons" + RESET)
+		print(CYAN + "\nDatabase Icons" + RESET)
 		for _, value := range icons.List {
 			print(YELLOW, "\n\t", index, RESET)
 			print("\t", value.Name)
@@ -121,7 +121,7 @@ var listCmd = &cobra.Command{
 	Long:  `List all installed themes and icons`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		listStoreCmd.Run(cmd, args)
+		listDatabaseCmd.Run(cmd, args)
 		listIconsCmd.Run(cmd, args)
 		listThemesCmd.Run(cmd, args)
 		println()
@@ -129,7 +129,7 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd.AddCommand(listStoreCmd)
+	listCmd.AddCommand(listDatabaseCmd)
 	listCmd.AddCommand(listIconsCmd)
 	listCmd.AddCommand(listThemesCmd)
 
