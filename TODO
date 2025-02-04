@@ -1,5 +1,4 @@
+- Fix database schema and connections
 - Set command: enable .themes folder command
-- List command: list offical themes
 - Set up releases
 - create CONTRIBUTING.md
-

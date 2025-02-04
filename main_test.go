@@ -160,7 +160,7 @@ func install_icons_url() {
 	str := []string{
 		"install",
 		"icons",
-		"https://github.com/linux-themes/themes-official/raw/main/icons/Mint.tar.xz",
+		"https://github.com/linux-themes/database/icons/raw/main/icons/Mint.tar.xz",
 	}
 	command := exec.Command(name, str...)
 	err := command.Run()
@@ -182,7 +182,7 @@ func install_themes_url() {
 	str := []string{
 		"install",
 		"themes",
-		"https://github.com/linux-themes/themes-official/raw/main/themes/gnome/MarbleShell.tar.gz",
+		"https://github.com/linux-themes/database/themes/raw/main/themes/gnome/MarbleShell.tar.gz",
 	}
 	command := exec.Command(name, str...)
 	err := command.Run()

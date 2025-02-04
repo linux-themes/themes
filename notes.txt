@@ -13,10 +13,6 @@ git push origin v0.0.1
 
 gotest -v
 
-themes install icons https://github.com/linux-themes/themes-official/raw/main/icons/mint.tar.xz
-themes install themes https://github.com/linux-themes/themes-official/raw/main/themes/marble-shell.tar.gz
-
-
 -add set command
 -add revert command
 -add create theme/icon project command
