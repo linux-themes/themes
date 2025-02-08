@@ -13,7 +13,7 @@ Manage your linux desktop themes
 ## Install
 
 ```sh
-go install github.com/linux-themes/themes@latest
+go install -v -a github.com/linux-themes/themes@latest -v
 ```
 
 Install go from https://go.dev/doc/install
