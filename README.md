@@ -34,7 +34,7 @@ echo $PATH | tr ':' '\n' | grep 'go/bin'
 
 If not add to .bashrc 
 ```sh
-echo -n 'export PATH="~/go/bin:$PATH"' >> ~/.bashrc
+echo -n 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
 ```
 ```sh
 source ~/.bashrc
