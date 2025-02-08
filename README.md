@@ -47,14 +47,14 @@ source ~/.bashrc
 themes list 
 themes install themes https://github.com/linux-themes/database/raw/refs/heads/main/themes/gnome/marble/Marble.tar.gz
 themes set
-themes remove 
+themes remove all
 ```
 
 ```sh
 themes list
 themes install icons 1 2 3 4
 themes set
-themes remove 
+themes remove icons
 ```
 
 ## Contributing
