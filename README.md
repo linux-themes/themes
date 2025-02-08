@@ -44,7 +44,15 @@ source ~/.bashrc
 
 ```sh
 themes list all
-themes install https://github.com/sudo-adduser-jordan/mint-y-winx/raw/main/mint-y-winx.tar.xz
+themes install themes https://github.com/linux-themes/database/raw/refs/heads/main/themes/gnome/marble/Marble.tar.gz
+themes set
+themes remove 
+```
+
+```sh
+themes list all
+themes install icons 1 2 3 4
+themes set
 themes remove 
 ```
 
