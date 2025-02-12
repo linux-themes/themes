@@ -22,21 +22,36 @@ func IsValidUrl(url string) bool {
 	return false
 }
 
-func IsValidStorePackage(list List, link string) bool {
-	num, err := strconv.Atoi(link)
-	if err == nil { // If number
-		if num < 1 || num > 40 {
-			fmt.Printf("number %d is out of range (%d - %d)", num, 1, 40)
-			return false
-		}
-		return true
-	}
+func IsValidStorePackage(list List, category string, link string) bool {
+	package_id, err := strconv.Atoi(link)
 
-	for _, data := range list.List { // If package name matches
-		if strings.ToLower(data.Name) == link {
+	switch category {
+	case "themes":
+		if err == nil {
+			if package_id < 0 || package_id > len(list.Themes) {
+				return false
+			}
 			return true
 		}
+		for _, theme := range list.Themes {
+			if strings.ToLower(theme.Name) == link {
+				return true
+			}
+		}
+	case "icons":
+		if err == nil {
+			if package_id < 0 || package_id > len(list.Icons) {
+				return false
+			}
+			return true
+		}
+		for _, icon := range list.Icons {
+			if strings.ToLower(icon.Name) == link {
+				return true
+			}
+		}
 	}
+
 	return false
 }
 
@@ -95,12 +110,12 @@ var installIconsCmd = &cobra.Command{
 
 		valid_links := []string{}
 		for _, link := range args {
-			if IsValidStorePackage(icons, link) {
+			if IsValidStorePackage(icons, "icons", link) {
 				if _, err := strconv.Atoi(link); err == nil {
-					valid_links = append(valid_links, icons.List[link].Url)
-					fmt.Println(GREEN + "Valid Package\t\t" + RESET + icons.List[link].Url + RESET)
+					valid_links = append(valid_links, icons.Icons[link].Url)
+					fmt.Println(GREEN + "Valid Package\t\t" + RESET + icons.Icons[link].Url + RESET)
 				} else {
-					for _, theme := range icons.List {
+					for _, theme := range icons.Icons {
 						if strings.ToLower(theme.Name) == link {
 							fmt.Println(GREEN + "Valid Package\t\t" + RESET + theme.Url + RESET)
 							valid_links = append(valid_links, theme.Url)
@@ -155,12 +170,12 @@ var installThemesCmd = &cobra.Command{
 
 		valid_links := []string{}
 		for _, link := range args {
-			if IsValidStorePackage(themes, link) {
+			if IsValidStorePackage(themes, "themes", link) {
 				if _, err := strconv.Atoi(link); err == nil {
-					valid_links = append(valid_links, themes.List[link].Url)
-					fmt.Println(GREEN + "Valid Package\t\t" + RESET + themes.List[link].Url + RESET)
+					valid_links = append(valid_links, themes.Themes[link].Url)
+					fmt.Println(GREEN + "Valid Package\t\t" + RESET + themes.Themes[link].Url + RESET)
 				} else {
-					for _, theme := range themes.List {
+					for _, theme := range themes.Themes {
 						if strings.ToLower(theme.Name) == link {
 							fmt.Println(GREEN + "Valid Package\t\t" + RESET + theme.Url + RESET)
 							valid_links = append(valid_links, theme.Url)

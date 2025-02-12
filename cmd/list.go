@@ -98,7 +98,7 @@ var listDatabaseCmd = &cobra.Command{
 
 		index := 1
 		print(CYAN + "Database Themes" + RESET)
-		for _, value := range themes.List {
+		for _, value := range themes.Themes {
 			print(YELLOW, "\n\t", index, RESET)
 			print("\t", value.Name)
 			index++
@@ -106,7 +106,7 @@ var listDatabaseCmd = &cobra.Command{
 
 		index = 1
 		print(CYAN + "\nDatabase Icons" + RESET)
-		for _, value := range icons.List {
+		for _, value := range icons.Icons {
 			print(YELLOW, "\n\t", index, RESET)
 			print("\t", value.Name)
 			index++

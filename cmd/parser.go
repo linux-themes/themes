@@ -10,33 +10,48 @@ import (
 )
 
 type Data struct {
-	Name        string `yaml:"Name"`
-	Description string `yaml:"Description"`
-	Category    string `yaml:"Category"`
-	Icon        string `yaml:"Icon"`
-	Url         string `yaml:"Url"`
+	Name     string `yaml:"name"`
+	Category string `yaml:"category"`
+	Url      string `yaml:"url_package"`
 }
 
 type List struct {
-	List map[string]Data `yaml:"Themes"`
+	Themes  map[string]Data `yaml:"themes"`
+	Icons   map[string]Data `yaml:"icons"`
+	Configs map[string]Data `yaml:"configs"`
 }
 
 func Yaml_print_list(list List) {
-	for key, theme := range list.List {
-		print(GREEN+"\nTheme: "+RESET, key)
-		print(YELLOW+"\n	Name: "+RESET, theme.Name)
-		print(YELLOW+"\n	Description: "+RESET, theme.Description)
-		print(YELLOW+"\n	Category: "+RESET, theme.Category)
-		print(YELLOW+"\n	Icon: "+RESET, theme.Icon)
+	print("themes: hit\n")
+	for key, item := range list.Themes {
+		print(GREEN+"\nPackage: "+RESET, key)
+		print(YELLOW+"\n	Name: "+RESET, item.Name)
+		print(YELLOW+"\n	Category: "+RESET, item.Category)
+		print(YELLOW+"\ns	Url: "+RESET, item.Url)
+		print("\n")
+	}
+	print("icons: hit\n")
+	for key, item := range list.Icons {
+		print(GREEN+"\nPackage: "+RESET, key)
+		print(YELLOW+"\n	Name: "+RESET, item.Name)
+		print(YELLOW+"\n	Category: "+RESET, item.Category)
+		print(YELLOW+"\n	Url: "+RESET, item.Url)
+		print("\n")
+	}
+	print("configs: hit\n")
+	for key, item := range list.Configs {
+		print(GREEN+"\nPackage: "+RESET, key)
+		print(YELLOW+"\n	Name: "+RESET, item.Name)
+		print(YELLOW+"\n	Category: "+RESET, item.Category)
+		print(YELLOW+"\n	Url: "+RESET, item.Url)
 		print("\n")
 	}
 }
 
 func Yaml_print(data Data) {
 	print(YELLOW+"\n	Name: "+RESET, data.Name)
-	print(YELLOW+"\n	Description: "+RESET, data.Description)
 	print(YELLOW+"\n	Category: "+RESET, data.Category)
-	print(YELLOW+"\n	Icon: "+RESET, data.Icon)
+	print(YELLOW+"\n	Url: "+RESET, data.Url)
 	print("\n")
 }
 
