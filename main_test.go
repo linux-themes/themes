@@ -71,7 +71,7 @@ func Test_Install_Program(t *testing.T) {
 	}{
 		{"build", install_program_build},
 		{"install source", install_program_source},
-		// {"install repository", install_program_repository},
+		{"install repository", install_program_repository},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -161,7 +161,7 @@ func install_icons_url() {
 	str := []string{
 		"install",
 		"icons",
-		"https://github.com/linux-themes/database/raw/refs/heads/main/icons/mint/Mint.tar.xz",
+		"https://github.com/linux-themes/Win11-icon-theme/releases/download/v1.0.0/Win11.tar.xz",
 	}
 	command := exec.Command(name, str...)
 	output, err := command.CombinedOutput()
@@ -173,7 +173,7 @@ func install_icons_url() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	if _, err = os.Stat(home_path + "/.icons/Mint"); err != nil {
+	if _, err = os.Stat(home_path + "/.icons/Win11-black"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
@@ -183,7 +183,7 @@ func install_themes_url() {
 	str := []string{
 		"install",
 		"themes",
-		"https://github.com/linux-themes/database/raw/refs/heads/main/themes/gnome/marble/Marble.tar.gz",
+		"https://github.com/linux-themes/WhiteSur-gtk-theme/releases/download/v1.0.0/WhiteSur.tar.xz",
 	}
 	command := exec.Command(name, str...)
 	output, err := command.CombinedOutput()
@@ -195,7 +195,7 @@ func install_themes_url() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	if _, err = os.Stat(home_path + "/.themes/Marble-blue-dark"); err != nil {
+	if _, err = os.Stat(home_path + "/.themes/WhiteSur-Dark"); err != nil {
 		log.Fatal(err.Error())
 	}
 }
