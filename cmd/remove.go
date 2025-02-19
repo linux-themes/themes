@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -26,24 +25,24 @@ var removeAllCmd = &cobra.Command{
 			if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println(RED + "Icons removed." + RESET)
+			println(RED + "Icons removed." + RESET)
 			if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println(RED + "Themes removed." + RESET)
+			println(RED + "Themes removed." + RESET)
 		} else {
 			if args[0] == "icons" {
 				if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
 					log.Fatal(err)
 				}
-				fmt.Println(RED + "Icons removed." + RESET)
+				println(RED + "Icons removed." + RESET)
 			}
 
 			if args[0] == "themes" {
 				if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
 					log.Fatal(err)
 				}
-				fmt.Println(RED + "Themes removed." + RESET)
+				println(RED + "Themes removed." + RESET)
 			}
 		}
 	},
@@ -104,16 +103,16 @@ var removeIconsCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			fmt.Println(YELLOW + "Icons removed: " + RESET)
+			println(YELLOW + "Icons removed: " + RESET)
 			for _, result := range form_results_strings {
 				if err := os.RemoveAll(home_path + "/.icons/" + result); err != nil {
-					fmt.Println(YELLOW + "Package does not exist: " + result + RESET)
+					println(YELLOW + "Package does not exist: " + result + RESET)
 				} else {
-					fmt.Println(RED + "\t" + result + RESET)
+					println(RED + "\t" + result + RESET)
 				}
 			}
 		} else {
-			fmt.Println(YELLOW + "Command canceled." + RESET)
+			println(YELLOW + "Command canceled." + RESET)
 		}
 	},
 }
@@ -174,16 +173,16 @@ var removeThemesCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			fmt.Println(YELLOW + "Themes removed: " + RESET)
+			println(YELLOW + "Themes removed: " + RESET)
 			for _, result := range form_results_strings {
 				if err := os.RemoveAll(home_path + "/.themes/" + result); err != nil {
-					fmt.Println(YELLOW + "Package does not exist: " + result + RESET)
+					println(YELLOW + "Package does not exist: " + result + RESET)
 				} else {
-					fmt.Println(RED + "\t" + result + RESET)
+					println(RED + "\t" + result + RESET)
 				}
 			}
 		} else {
-			fmt.Println(YELLOW + "Command canceled." + RESET)
+			println(YELLOW + "Command canceled." + RESET)
 		}
 	},
 }
