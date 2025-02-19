@@ -112,7 +112,7 @@ var removeIconsCmd = &cobra.Command{
 				}
 			}
 		} else {
-			println(YELLOW + "Command canceled." + RESET)
+			println("Command canceled.")
 		}
 	},
 }
@@ -182,7 +182,7 @@ var removeThemesCmd = &cobra.Command{
 				}
 			}
 		} else {
-			println(YELLOW + "Command canceled." + RESET)
+			println("Command canceled.")
 		}
 	},
 }
