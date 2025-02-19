@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func IsValidUrl(url string) bool {
+func is_valid_url(url string) bool {
 	if strings.Contains(url, "https://") &&
 		(strings.Contains(url, "tar.xz") || strings.Contains(url, "tar.gz") || strings.Contains(url, "tar.yz")) {
 		return true
@@ -22,59 +22,24 @@ func IsValidUrl(url string) bool {
 	return false
 }
 
-func IsValidStorePackage(list List, category string, link string) bool {
-	package_id, err := strconv.Atoi(link)
-
-	switch category {
-	case "themes":
-		if err == nil {
-			if package_id < 0 || package_id > len(list.Themes) {
-				return false
-			}
-			return true
-		}
-		for _, theme := range list.Themes {
-			if strings.ToLower(theme.Name) == link {
-				return true
-			}
-		}
-	case "icons":
-		if err == nil {
-			if package_id < 0 || package_id > len(list.Icons) {
-				return false
-			}
-			return true
-		}
-		for _, icon := range list.Icons {
-			if strings.ToLower(icon.Name) == link {
-				return true
-			}
-		}
+func download_file(filepath string, url string) {
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to create request: %v\n", err)
+		return
 	}
-
-	return false
-}
-
-// check checks the returned error of a function.
-func check(f func() error) {
-	if err := f(); err != nil {
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
 		fmt.Fprintf(os.Stderr, "received error: %v\n", err)
+		return
 	}
-}
-
-func DownloadFile(filepath string, url string) {
-
-	fmt.Println(GREEN + "Connecting\t" + CYAN + url + RESET)
-
-	req, _ := http.NewRequest("GET", url, nil)
-	resp, _ := http.DefaultClient.Do(req)
-	defer check(resp.Body.Close)
+	defer response.Body.Close()
 
 	f, _ := os.OpenFile(filepath, os.O_CREATE|os.O_WRONLY, 0644)
 	defer f.Close()
 
 	bar := progressbar.NewOptions(
-		int(resp.ContentLength),
+		int(response.ContentLength),
 		progressbar.OptionSetDescription(GREEN+"Downloading\t"+RESET),
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionUseANSICodes(true),
@@ -85,16 +50,14 @@ func DownloadFile(filepath string, url string) {
 			},
 		),
 	)
-	io.Copy(io.MultiWriter(f, bar), resp.Body)
-
-	fmt.Println()
+	io.Copy(io.MultiWriter(f, bar), response.Body)
 }
 
-func Extract_Tar(filepath string, directory string) error {
+func extract_tar(filepath string, directory string) error {
 	cmd := exec.Command("tar", "-xf", filepath, "-C", directory)
 	_, err := cmd.Output()
 	if err != nil {
-		fmt.Println(err.Error())
+		println(err.Error())
 	}
 	return err
 }
@@ -106,34 +69,9 @@ var installIconsCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		icons := Yaml_get_file("icons")
-
-		valid_links := []string{}
-		for _, link := range args {
-			if IsValidStorePackage(icons, "icons", link) {
-				if _, err := strconv.Atoi(link); err == nil {
-					valid_links = append(valid_links, icons.Icons[link].Url)
-					fmt.Println(GREEN + "Valid Package\t\t" + RESET + icons.Icons[link].Url + RESET)
-				} else {
-					for _, theme := range icons.Icons {
-						if strings.ToLower(theme.Name) == link {
-							fmt.Println(GREEN + "Valid Package\t\t" + RESET + theme.Url + RESET)
-							valid_links = append(valid_links, theme.Url)
-						}
-					}
-				}
-			} else if IsValidUrl(link) {
-				valid_links = append(valid_links, link)
-				fmt.Println(GREEN + "Valid Package\t" + RESET + link + RESET)
-			} else {
-				fmt.Println(RED + "Invalid Package\t" + RESET + link + RESET)
-			}
-		}
-
-		home_path, err := os.UserHomeDir()
-		if err != nil {
-			log.Fatal(err)
-		}
+		var valid_packages []string
+		var icons = Yaml_get_file("icons")
+		var home_path, _ = os.UserHomeDir()
 
 		if _, err := os.Stat(home_path + "/.icons"); os.IsNotExist(err) {
 			if err := os.Mkdir(home_path+"/.icons", os.ModePerm); err != nil {
@@ -147,15 +85,36 @@ var installIconsCmd = &cobra.Command{
 			}
 		}
 
-		for _, link := range valid_links {
-			last_index := strings.LastIndex(link, "/")
-			file_name := link[last_index+1:]
-			fmt.Println(GREEN + "Installing\t" + RESET + CYAN + home_path + "/.icons/" + file_name + RESET)
-			DownloadFile(home_path+"/Downloads/"+file_name, link)
-			Extract_Tar(home_path+"/Downloads/"+file_name, home_path+"/.icons")
-			parts := strings.Split(file_name, ".")
-			fmt.Println(GREEN + "Installed\t" + RESET + CYAN + parts[0] + RESET)
+		for _, pkg := range args {
+			if package_number, err := strconv.Atoi(pkg); err != nil { // if string
+				if is_valid_url(pkg) {
+					valid_packages = append(valid_packages, pkg)
+					println(GREEN + "Valid Package\t\t" + RESET + pkg + RESET)
+				}
+			} else {
+				if package_number > 0 && package_number <= len(icons.Icons) { // if number in range
+					valid_packages = append(valid_packages, icons.Icons[pkg].Url)
+					println(GREEN + "Valid Package\t\t" + RESET + icons.Icons[pkg].Url + RESET)
+				} else {
+					println(RED + "Invalid Package\t\t" + RESET + pkg + RESET) // if error
+				}
+			}
 		}
+
+		for _, pkg := range valid_packages {
+			file_name := pkg[strings.LastIndex(pkg, "/")+1:]
+			println(YELLOW + "Installing\t\t" + RESET + CYAN + pkg + RESET)
+			download_file(home_path+"/Downloads/"+file_name, pkg)
+			extract_tar(home_path+"/Downloads/"+file_name, home_path+"/.icons")
+			println()
+		}
+
+		for _, pkg := range valid_packages {
+			file_name := pkg[strings.LastIndex(pkg, "/")+1:]
+			parts := strings.Split(file_name, ".")
+			println(GREEN + "Installed\t\t" + RESET + CYAN + parts[0] + RESET)
+		}
+
 	},
 }
 
@@ -166,34 +125,9 @@ var installThemesCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		themes := Yaml_get_file("themes")
-
-		valid_links := []string{}
-		for _, link := range args {
-			if IsValidStorePackage(themes, "themes", link) {
-				if _, err := strconv.Atoi(link); err == nil {
-					valid_links = append(valid_links, themes.Themes[link].Url)
-					fmt.Println(GREEN + "Valid Package\t\t" + RESET + themes.Themes[link].Url + RESET)
-				} else {
-					for _, theme := range themes.Themes {
-						if strings.ToLower(theme.Name) == link {
-							fmt.Println(GREEN + "Valid Package\t\t" + RESET + theme.Url + RESET)
-							valid_links = append(valid_links, theme.Url)
-						}
-					}
-				}
-			} else if IsValidUrl(link) {
-				valid_links = append(valid_links, link)
-				fmt.Println(GREEN + "Valid Package\t" + RESET + link + RESET)
-			} else {
-				fmt.Println(RED + "Invalid Package\t" + RESET + link + RESET)
-			}
-		}
-
-		home_path, err := os.UserHomeDir()
-		if err != nil {
-			log.Fatal(err)
-		}
+		var valid_packages []string
+		var themes = Yaml_get_file("themes")
+		var home_path, _ = os.UserHomeDir()
 
 		if _, err := os.Stat(home_path + "/.themes"); os.IsNotExist(err) {
 			if err := os.Mkdir(home_path+"/.themes", os.ModePerm); err != nil {
@@ -201,14 +135,40 @@ var installThemesCmd = &cobra.Command{
 			}
 		}
 
-		for _, link := range valid_links {
-			last_index := strings.LastIndex(link, "/")
-			file_name := link[last_index+1:]
-			fmt.Println(GREEN + "Installing\t\t" + RESET + CYAN + home_path + "/.themes/" + file_name + RESET)
-			DownloadFile(home_path+"/Downloads/"+file_name, link)
-			Extract_Tar(home_path+"/Downloads/"+file_name, home_path+"/.themes/")
+		if _, err := os.Stat(home_path + "/Downloads"); os.IsNotExist(err) {
+			if err := os.Mkdir(home_path+"/Downloads", os.ModePerm); err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		for _, pkg := range args {
+			if package_number, err := strconv.Atoi(pkg); err != nil { // if string
+				if is_valid_url(pkg) {
+					valid_packages = append(valid_packages, pkg)
+					println(GREEN + "Valid Package\t\t" + RESET + pkg + RESET)
+				}
+			} else {
+				if package_number > 0 && package_number <= len(themes.Themes) { // if number in range
+					valid_packages = append(valid_packages, themes.Themes[pkg].Url)
+					println(GREEN + "Valid Package\t\t" + RESET + themes.Themes[pkg].Url + RESET)
+				} else {
+					println(RED + "Invalid Package\t\t" + RESET + pkg + RESET) // if error
+				}
+			}
+		}
+
+		for _, pkg := range valid_packages {
+			file_name := pkg[strings.LastIndex(pkg, "/")+1:]
+			println(YELLOW + "Installing\t\t" + RESET + CYAN + pkg + RESET)
+			download_file(home_path+"/Downloads/"+file_name, pkg)
+			extract_tar(home_path+"/Downloads/"+file_name, home_path+"/.themes")
+			println()
+		}
+
+		for _, pkg := range valid_packages {
+			file_name := pkg[strings.LastIndex(pkg, "/")+1:]
 			parts := strings.Split(file_name, ".")
-			fmt.Println(GREEN + "Installed\t\t" + RESET + CYAN + parts[0] + RESET)
+			println(GREEN + "Installed\t\t" + RESET + CYAN + parts[0] + RESET)
 		}
 	},
 }
