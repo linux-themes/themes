@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -33,14 +32,13 @@ var listIconsCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			print(GREEN + "\nIcons" + RESET)
+			println(GREEN + "Icons" + RESET)
 			for index, value := range entries {
-				print(YELLOW, "\n\t", index+1, RESET)
-				print("\t", value.Name())
+				println(YELLOW, index+1, RESET, "\t\t", value.Name())
 			}
 
 			if len(entries) == 0 {
-				fmt.Println("\tNo icons installed.")
+				println("\tNo icons installed.")
 			}
 		}
 		println()
@@ -72,14 +70,13 @@ var listThemesCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			print(GREEN + "\nThemes" + RESET)
+			println(GREEN + "Themes" + RESET)
 			for index, value := range entries {
-				print(YELLOW, "\n\t", index+1, RESET)
-				print("\t", value.Name())
+				println(YELLOW, index+1, RESET, "\t\t", value.Name())
 			}
 
 			if len(entries) == 0 {
-				fmt.Println("\tNo themes installed.")
+				println("\tNo themes installed.")
 			}
 		}
 		println()
@@ -97,18 +94,17 @@ var listDatabaseCmd = &cobra.Command{
 		icons := Yaml_get_file("icons")
 
 		index := 1
-		print(CYAN + "Database Themes" + RESET)
+		println(CYAN + "Database Themes" + RESET)
 		for _, value := range themes.Themes {
-			print(YELLOW, "\n\t", index, RESET)
-			print("\t", value.Name)
+			println(YELLOW, index, RESET, "\t\t", value.Name)
 			index++
 		}
+		println()
 
 		index = 1
-		print(CYAN + "\nDatabase Icons" + RESET)
+		println(CYAN + "Database Icons" + RESET)
 		for _, value := range icons.Icons {
-			print(YELLOW, "\n\t", index, RESET)
-			print("\t", value.Name)
+			println(YELLOW, index, RESET, "\t\t", value.Name)
 			index++
 		}
 		println()
