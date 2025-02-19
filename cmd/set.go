@@ -134,9 +134,9 @@ var setCmd = &cobra.Command{
 			execute_command("gsettings", "set", "org.gnome.desktop.interface", "icon-theme", form_results_icons)
 			execute_command("dconf", "write", "/org/gnome/shell/extensions/user-theme/name", "'"+form_results_themes+"'")
 
+			println(YELLOW + "Icons set: " + RESET + GREEN + string(form_results_icons) + RESET)
+			println(YELLOW + "Themes set: " + RESET + GREEN + string(form_results_themes) + RESET)
 		}
-		println(YELLOW + "Theme\t\t" + RESET + GREEN + string(form_results_themes) + RESET)
-		println(YELLOW + "Icon\t\t" + RESET + GREEN + string(form_results_icons) + RESET)
 	},
 }
 
