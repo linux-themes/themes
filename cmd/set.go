@@ -10,15 +10,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// TODO set themes
+// TODO
+// -gnome
+// -XDG_CURRENT_DESKTOP=GNOME
+// -kde
+// -cinnamon
+// -mate
 
-// gnome
-// XDG_CURRENT_DESKTOP=GNOME
-// kde
-// cinnamon
-// mate
-
-func isValidEnvirnoment(str string) bool {
+func is_valid_envirnoment(str string) bool {
 	switch str {
 	case "GNOME":
 		return true
@@ -31,6 +30,15 @@ func isValidEnvirnoment(str string) bool {
 	}
 }
 
+func execute_command(name string, arg ...string) {
+	cmd := exec.Command(name, arg...)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("Error: %s\n", err.Error())
+		return
+	}
+}
+
 var setCmd = &cobra.Command{
 	Use:   "set",
 	Short: "Set selected theme",
@@ -38,9 +46,8 @@ var setCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		desktop_env := os.Getenv("XDG_CURRENT_DESKTOP")
-		// fmt.Println(desktop_env)
 
-		if !isValidEnvirnoment(desktop_env) {
+		if !is_valid_envirnoment(desktop_env) {
 			log.Fatal(RED + "Desktop envirnoment not supported." + RESET + YELLOW + " Contribute to https://github.com/linux-themes/themes" + RESET)
 		}
 
@@ -121,33 +128,16 @@ var setCmd = &cobra.Command{
 		}
 
 		if form_results_cancel == 1 {
-			fmt.Println("Command Canceled")
+			println("Command Canceled")
 		} else {
-			// gsettings set org.gnome.desktop.interface icon-theme 'mint'
-			// dconf write /org/gnome/shell/extensions/user-theme/name "'Marble-purple-dark'"
-			runCommand("gnome-extensions", "enable", "user-theme@gnome-shell-extensions.gcampax.github.com") // needs a variable check
+			execute_command("gnome-extensions", "enable", "user-theme@gnome-shell-extensions.gcampax.github.com") // needs a variable check
+			execute_command("gsettings", "set", "org.gnome.desktop.interface", "icon-theme", form_results_icons)
+			execute_command("dconf", "write", "/org/gnome/shell/extensions/user-theme/name", "'"+form_results_themes+"'")
 
-			runCommand("gsettings", "set", "org.gnome.desktop.interface", "icon-theme", form_results_icons)
-			runCommand("dconf", "write", "/org/gnome/shell/extensions/user-theme/name", "'"+form_results_themes+"'")
-
-			if len(icons) < 1 {
-				fmt.Println(YELLOW + "Icons set: " + RESET + GREEN + string(form_results_icons) + RESET)
-			}
-
-			if len(themes) < 1 {
-				fmt.Println(YELLOW + "Themes set: " + RESET + GREEN + string(form_results_themes) + RESET)
-			}
 		}
+		println(YELLOW + "Theme\t\t" + RESET + GREEN + string(form_results_themes) + RESET)
+		println(YELLOW + "Icon\t\t" + RESET + GREEN + string(form_results_icons) + RESET)
 	},
-}
-
-func runCommand(name string, arg ...string) {
-	cmd := exec.Command(name, arg...)
-	err := cmd.Run()
-	if err != nil {
-		fmt.Printf("Error: %s\n", err.Error())
-		return
-	}
 }
 
 func init() {
