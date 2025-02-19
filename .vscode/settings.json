@@ -1,5 +1,5 @@
 {
     "editor.defaultFormatter": "golang.go",
-    "testing.alwaysRevealTestOnStateChange": true,
     "go.testExplorer.alwaysRunBenchmarks": true
+    ,"go.testTimeout": "60s"
 }

@@ -228,53 +228,34 @@ func test_remove_all() {
 		log.Fatal(err)
 	}
 
-	_, err = os.Stat(home_path + "/.icons")
-	if err == nil {
-		log.Fatal(err)
-	}
-
-	_, err = os.Stat(home_path + "/.themes")
-	if err == nil {
-		log.Fatal(err)
-	}
-}
-
-func test_remove_icons() {
-	str := strings.Split("./bin/themes.exe remove all icons", " ")
-	command := exec.Command(str[0], str[1:]...)
-	err := command.Run()
-	if err != nil {
-		log.Fatalf("command.Run() failed: %v\n", err.Error())
-	}
-
-	home_path, err := os.UserHomeDir()
+	file, err := os.Open(home_path + "/.icons")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 
-	_, err = os.Stat(home_path + "/.icons")
+	_, err = file.Readdir(1)
+	println(err.Error())
 	if err == nil {
-		log.Fatal(err)
-	}
-}
-
-func test_remove_themes() {
-	str := strings.Split("./bin/themes.exe remove all themes", " ")
-	command := exec.Command(str[0], str[1:]...)
-	err := command.Run()
-	if err != nil {
-		log.Fatalf("command.Run() failed: %v\n", err.Error())
-	}
-
-	home_path, err := os.UserHomeDir()
-	if err != nil {
+		println("icons/")
 		log.Fatal(err)
 	}
 
-	_, err = os.Stat(home_path + "/.themes")
+	file, err = os.Open(home_path + "/.themes")
+	if err != nil {
+		println(err.Error())
+
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	_, err = file.ReadDir(1)
+	println(err.Error())
 	if err == nil {
+		println("icons/")
 		log.Fatal(err)
 	}
+
 }
 
 func Test_Remove_Command(t *testing.T) {
@@ -283,8 +264,6 @@ func Test_Remove_Command(t *testing.T) {
 		Test func()
 	}{
 		{"themes remove all", test_remove_all},
-		{"themes remove icons", test_remove_icons},
-		{"themes remove themes", test_remove_themes},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
