@@ -3,17 +3,38 @@ package cmd
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
 
+func remove_contents(directory string) error {
+	dir, err := os.Open(directory)
+	if err != nil {
+		return err
+	}
+	defer dir.Close()
+
+	names, err := dir.Readdirnames(-1)
+	if err != nil {
+		return err
+	}
+	for _, name := range names {
+		println(RED, "\r\t", name, RESET)
+		err = os.RemoveAll(filepath.Join(directory, name))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 var removeAllCmd = &cobra.Command{
-	Use:       "all",
-	Short:     "Remove all packages from icons and themes",
-	Long:      `Remove all packages from icons and themes`,
-	ValidArgs: []string{"icons, themes"},
-	Args:      cobra.MaximumNArgs(1),
+	Use:   "all",
+	Short: "Remove all packages from icons and themes",
+	Long:  `Remove all packages from icons and themes`,
+	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		home_path, err := os.UserHomeDir()
@@ -21,29 +42,16 @@ var removeAllCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		if len(args) == 0 {
-			if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
-				log.Fatal(err)
-			}
-			println(RED + "Icons removed." + RESET)
-			if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
-				log.Fatal(err)
-			}
-			println(RED + "Themes removed." + RESET)
-		} else {
-			if args[0] == "icons" {
-				if err := os.RemoveAll(home_path + "/.icons/"); err != nil {
-					log.Fatal(err)
-				}
-				println(RED + "Icons removed." + RESET)
-			}
+		println(YELLOW + "Icons removed" + RESET)
+		if err := remove_contents(home_path + "/.icons/"); err != nil {
+			log.Fatal(err)
+		}
 
-			if args[0] == "themes" {
-				if err := os.RemoveAll(home_path + "/.themes/"); err != nil {
-					log.Fatal(err)
-				}
-				println(RED + "Themes removed." + RESET)
-			}
+		println()
+
+		println(YELLOW + "Themes removed" + RESET)
+		if err := remove_contents(home_path + "/.themes/"); err != nil {
+			log.Fatal(err)
 		}
 	},
 }
