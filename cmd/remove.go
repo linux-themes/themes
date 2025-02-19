@@ -103,7 +103,7 @@ var removeIconsCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			println(YELLOW + "Icons removed: " + RESET)
+			println(YELLOW + "Icons removed" + RESET)
 			for _, result := range form_results_strings {
 				if err := os.RemoveAll(home_path + "/.icons/" + result); err != nil {
 					println(YELLOW + "Package does not exist: " + result + RESET)
@@ -173,7 +173,7 @@ var removeThemesCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			println(YELLOW + "Themes removed: " + RESET)
+			println(YELLOW + "Themes removed" + RESET)
 			for _, result := range form_results_strings {
 				if err := os.RemoveAll(home_path + "/.themes/" + result); err != nil {
 					println(YELLOW + "Package does not exist: " + result + RESET)
